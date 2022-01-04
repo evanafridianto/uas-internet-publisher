@@ -10,9 +10,8 @@ class BerandaController extends Controller
     public function index()
     {
         $data = [
-        	'page_title'  => 'Beranda',
+        	'title'  => 'Beranda',
         ];
         return view('admin/pages/beranda',$data);
-        // return view('welcome');
     }
 }
