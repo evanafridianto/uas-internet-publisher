@@ -9,7 +9,7 @@
             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                         class=" icon-notebook"></i><span class="nav-text">Data Master</span></a>
                 <ul aria-expanded="false">
-                    <li><a href="./uc-select2.html">Data Barang</a></li>
+                    <li><a href="/barang">Data Barang</a></li>
                     <li><a href="./uc-select2.html">Data Pembeli</a></li>
                     <li><a href="./uc-select2.html">Data Supplier</a></li>
                 </ul>
