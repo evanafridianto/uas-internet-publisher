@@ -3,15 +3,15 @@
         <ul class="metismenu" id="menu">
             <li class="nav-label first">Main Menu</li>
             <li><a href="/" aria-expanded="false"><i class="icon icon-home"></i><span
-                class="nav-text">Dashboard</span></a></li>
+                        class="nav-text">Dashboard</span></a></li>
 
             <li class="nav-label">Database</li>
             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                         class=" icon-notebook"></i><span class="nav-text">Data Master</span></a>
                 <ul aria-expanded="false">
                     <li><a href="/barang">Data Barang</a></li>
-                    <li><a href="./uc-select2.html">Data Pembeli</a></li>
-                    <li><a href="./uc-select2.html">Data Supplier</a></li>
+                    <li><a href="/pembeli">Data Pembeli</a></li>
+                    <li><a href="/supplier">Data Supplier</a></li>
                 </ul>
             </li>
             <li class="nav-label">business</li>
@@ -31,7 +31,7 @@
                 </ul>
             </li>
             <li><a href="#" aria-expanded="false"><i class="icon-logout"></i><span
-                class="nav-text">Logout</span></a></li>
+                        class="nav-text">Logout</span></a></li>
         </ul>
     </div>
 </div>

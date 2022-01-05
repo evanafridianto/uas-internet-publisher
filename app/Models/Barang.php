@@ -14,13 +14,12 @@ class Barang extends Model
     protected $primaryKey = 'id_barang';
 
     protected $fillable =  [
-        'nama_barang','harga','stok','id_supplier'
+        'nama_barang', 'harga', 'stok', 'id_supplier'
     ];
 
-      // relasi antara tb barang ke tb supplier
-    public function supplier(){
-    	return $this->belongsTo('App\Models\Supplier');
+    // relasi antara tb barang ke tb supplier
+    public function supplier()
+    {
+        return $this->belongsTo('App\Models\Supplier');
     }
-
-
 }

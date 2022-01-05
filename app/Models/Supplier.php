@@ -13,12 +13,12 @@ class Supplier extends Model
     protected $primaryKey = 'id_supplier';
 
     protected $fillable =  [
-        'nama_supplier','no_telp','alamat',
+        'nama_supplier', 'no_telp', 'alamat',
     ];
 
     // relasi antara tb supplier ke tb barang
-    public function barang(){
-    	return $this->hasMany('App\Models\Barang');
+    public function barang()
+    {
+        return $this->hasMany('App\Models\Barang');
     }
-
 }

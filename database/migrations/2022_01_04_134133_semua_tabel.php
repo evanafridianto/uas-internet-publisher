@@ -16,24 +16,25 @@ class SemuaTabel extends Migration
 
         Schema::create('pembeli', function (Blueprint $table) {
             $table->increments('id_pembeli');
-            $table->string('nama_pembeli',250);
-            $table->char('jk',30);
-            $table->char('no_telp',20);
-            $table->string('alamat',250);
+            $table->string('nama_pembeli', 250);
+            // $table->char('jk', 30);
+            $table->enum('jk', ['L', 'P']);
+            $table->char('no_telp', 20);
+            $table->string('alamat', 250);
             $table->timestamps();
         });
 
         Schema::create('supplier', function (Blueprint $table) {
             $table->increments('id_supplier');
-            $table->string('nama_supplier',250);
-            $table->char('no_telp',20);
-            $table->string('alamat',250);
+            $table->string('nama_supplier', 250);
+            $table->char('no_telp', 20);
+            $table->string('alamat', 250);
             $table->timestamps();
         });
 
         Schema::create('barang', function (Blueprint $table) {
             $table->increments('id_barang');
-            $table->string('nama_barang',250);
+            $table->string('nama_barang', 250);
             $table->integer('harga');
             $table->integer('stok');
 
@@ -48,7 +49,7 @@ class SemuaTabel extends Migration
             $table->unsignedInteger('id_barang')->nullable();
             $table->unsignedInteger('id_pembeli')->nullable();
             $table->date('tanggal');
-            $table->string('keterangan',250);
+            $table->string('keterangan', 250);
             $table->timestamps();
 
             $table->foreign('id_barang')->references('id_barang')->on('barang');
@@ -64,7 +65,6 @@ class SemuaTabel extends Migration
 
             $table->foreign('id_transaksi')->references('id_transaksi')->on('transaksi');
         });
-
     }
 
     /**

@@ -5,7 +5,7 @@
     <title>{{ $title }} - Toko Sola Fide </title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('admin/images/favicon.png') }}">
     <!-- JQuery -->
     <script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
     <!-- SweetAlert -->

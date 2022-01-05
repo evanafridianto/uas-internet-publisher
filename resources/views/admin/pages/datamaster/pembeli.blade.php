@@ -7,7 +7,7 @@
                     <h4 class="card-title">{{ $title }}</h4>
                 </div>
                 <div class="card-body ">
-                    <button type="button" class="btn btn-primary" onclick="add_barang()">+ Tambah Data</button>
+                    <button type="button" class="btn btn-primary" onclick="add_pembeli()">+ Tambah Data</button>
                     <button type="button" class="btn btn-info" onclick="reload_table()">Reload Tabel</button>
                     <hr>
                     <div class="table-responsive">
@@ -15,10 +15,10 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Barang</th>
-                                    <th>Harga</th>
-                                    <th>Stok</th>
-                                    <th>Supplier</th>
+                                    <th>Nama Pembeli</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th>No. Telp</th>
+                                    <th>Alamat</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -33,50 +33,51 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="barang_modal">
+    <div class="modal fade" id="pembeli_modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Modal title</h5>
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
-                <form id="barang_form">
+                <form id="pembeli_form">
                     <div class="modal-body">
-                        <input type="hidden" class="form-control input-default" name="id_barang">
+                        <input type="hidden" class="form-control input-default" name="id_pembeli">
                         <div class="form-group">
-                            <label>Nama Barang</label>
-                            <input type="text" class="form-control input-default" name="nama_barang"
-                                placeholder="Masukkan Nama Barang">
+                            <label>Nama Pembeli</label>
+                            <input type="text" class="form-control input-default" name="nama_pembeli"
+                                placeholder="Masukkan Nama Pembeli">
                             <span class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label>Harga (Rp)</label>
-                            <input type="text" class="form-control input-default" name="harga" placeholder="Masukkan Harga">
-                            <span class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Stok</label>
-                            <input type="text" class="form-control input-default" name="stok" placeholder="Masukkan Stok">
-                            <span class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Supplier</label>
-                            <select class="form-control" name="id_supplier">
-                                <option value="">--Pilih Supplier--</option>
-                                @foreach ($supplier as $list)
-                                    <option value="{{ $list->id_supplier }}">{{ $list->nama_supplier }}</option>
-                                @endforeach
+                            <label>Jenis Kelamin</label>
+                            <select name="jk" class="form-control">
+                                <option value="">--Pilih Jenis Kelamin--</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
                             </select>
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>No. Telp</label>
+                            <input type="text" class="form-control input-default" name="no_telp"
+                                placeholder="Masukkan No. Telp">
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label>Alamat</label>
+                            <input type="text" class="form-control input-default" name="alamat"
+                                placeholder="Masukkan Alamat">
                             <span class="text-danger"></span>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="btnSave" onclick="save_barang()">Simpan</button>
+                        <button type="button" class="btn btn-primary" id="btnSave" onclick="save_pembeli()">Simpan</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <script src="{{ asset('crud.js/barang.js') }}"></script>
+    <script src="{{ asset('crud.js/pembeli.js') }}"></script>
 @endsection
