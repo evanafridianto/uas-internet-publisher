@@ -16,12 +16,20 @@ $(function() {
                 name: "DT_RowIndex",
             },
             {
+                data: "nama_pembeli",
+                name: "nama_pembeli",
+            },
+            {
                 data: "nama_barang",
                 name: "nama_barang",
             },
             {
-                data: "nama_pembeli",
-                name: "nama_pembeli",
+                data: "jumlah",
+                name: "jumlah",
+            },
+            {
+                data: "harga",
+                name: "harga",
             },
             {
                 data: "tanggal",
@@ -48,6 +56,9 @@ $(function() {
     $("select").change(function() {
         $(this).next().empty();
     });
+    $("textarea").change(function() {
+        $(this).next().empty();
+    });
 
     // Date picker
     $(".datepicker").datepicker({
@@ -58,6 +69,33 @@ $(function() {
     });
 });
 
+function detail_barang(id) {
+    $.ajax({
+        url: "barang/edit/" + id,
+        type: "GET",
+        dataType: "JSON",
+        success: function(data) {
+            $('[name="harga"]').val(data.harga);
+            $('[name="stok"]').val(data.stok);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            swal({
+                title: "Error!",
+                text: "Server error!",
+                type: "error",
+                showConfirmButton: false,
+                timer: 1500,
+            }).then(
+                function() {},
+                // handling the promise rejection
+                function(dismiss) {
+                    if (dismiss === "timer") {}
+                }
+            );
+        },
+    });
+}
+
 //reload datatable ajax
 function reload_table() {
     table.ajax.reload(null, false);
@@ -65,10 +103,17 @@ function reload_table() {
 
 // add
 function add_transaksi() {
+    const t = new Date();
+    const date = ("0" + t.getDate()).slice(-2);
+    const month = ("0" + (t.getMonth() + 1)).slice(-2);
+    const year = t.getFullYear();
+    let today = year + "-" + month + "-" + date;
+    $('[name="tanggal"]').val(today);
+
     $(".text-danger").empty(); // clear error string
     $("#transaksi_modal").modal("show"); // show bootstrap modal
-    $(".modal-title").text("Tambah Data"); // Set Title to Bootstrap modal title
-    $("#transaksi_form")[0].reset(); // reset form on modals
+    $(".modal-title").text("Transaksi Baru"); // Set Title to Bootstrap modal title
+    $(".add-data").val(""); // reset form on modals
     $('[name="id_transaksi"]').val("");
 }
 // edit
@@ -86,6 +131,7 @@ function edit_transaksi(id) {
             $('[name="id_transaksi"]').val(data.id_transaksi);
             $('[name="id_barang"]').val(data.id_barang);
             $('[name="id_pembeli"]').val(data.id_pembeli);
+            $('[name="jumlah"]').val(data.jumlah);
             $('[name="tanggal"]').val(data.tanggal);
             $('[name="keterangan"]').val(data.keterangan);
         },

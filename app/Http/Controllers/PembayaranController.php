@@ -2,44 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pembayaran;
 use App\Models\Transaksi;
-use App\Models\Barang;
-use App\Models\Pembeli;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Validator;
 
-class TransaksiController extends Controller
+class PembayaranController extends Controller
 {
     public function index(Request $request)
     {
         $data = [
-            'title'  => 'Data Transaksi',
-            'barang' => Barang::all(),
-            'pembeli' => Pembeli::all()
+            'title'  => 'Data Pembayaran',
         ];
         if ($request->ajax()) {
-            $data = Transaksi::leftJoin('barang', 'barang.id_barang', '=', 'transaksi.id_barang')
-                ->leftJoin('pembeli', 'pembeli.id_pembeli', '=', 'transaksi.id_pembeli')
-                ->orderBy('id_transaksi', 'asc')
+            $data = Pembayaran::leftJoin('transaksi', 'transaksi.id_transaksi', '=', 'pembayaran.id_transaksi')
+                ->orderBy('id_pembayaran', 'asc')
                 ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $btn = '<div class="text-center"><button type="button" class="btn btn-success btn-sm" onclick="edit_transaksi(' . $row->id_transaksi . ')">Edit</button>
-                           <button type="button" class="btn btn-danger  btn-sm" onclick="delete_transaksi(' . $row->id_transaksi . ')">Hapus</button>
-                           <button type="button" class="btn btn-info  btn-sm" onclick="add_pembayaran(' . $row->id_transaksi . ')">Bayar</button></div>';
+                    $btn = '<div class="text-center"><button type="button" class="btn btn-success btn-sm" onclick="edit_pembayaran(' . $row->id_pembayaran . ')">Edit</button>
+                           <button type="button" class="btn btn-danger  btn-sm" onclick="delete_pembayaran(' . $row->id_pembayaran . ')">Hapus</button></div>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('admin.pages.sales.transaksi', $data);
+        return view('admin.pages.sales.pembayaran', $data);
     }
 
     public function edit($id)
     {
-        $data = Transaksi::find($id);
+        $data = Pembayaran::find($id);
         return response()->json($data);
     }
 
@@ -55,7 +50,7 @@ class TransaksiController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 404);
         };
-        Transaksi::updateOrCreate(
+        Pembayaran::updateOrCreate(
             [
                 'id_transaksi' => $request->id_transaksi
             ],
@@ -72,7 +67,7 @@ class TransaksiController extends Controller
 
     public function delete($id)
     {
-        Transaksi::find($id)->delete();
+        Pembayaran::find($id)->delete();
         return response()->json(['status' => true]);
     }
 }

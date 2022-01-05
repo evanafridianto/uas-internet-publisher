@@ -48,6 +48,7 @@ class SemuaTabel extends Migration
             $table->increments('id_transaksi');
             $table->unsignedInteger('id_barang')->nullable();
             $table->unsignedInteger('id_pembeli')->nullable();
+            $table->integer('jumlah');
             $table->date('tanggal');
             $table->string('keterangan', 250);
             $table->timestamps();

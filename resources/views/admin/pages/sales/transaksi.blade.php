@@ -7,7 +7,7 @@
                     <h4 class="card-title">{{ $title }}</h4>
                 </div>
                 <div class="card-body ">
-                    <button type="button" class="btn btn-primary" onclick="add_transaksi()">+ Tambah Data</button>
+                    <button type="button" class="btn btn-primary" onclick="add_transaksi()">+ Transaksi Baru</button>
                     <button type="button" class="btn btn-info" onclick="reload_table()">Reload Tabel</button>
                     <hr>
                     <div class="table-responsive">
@@ -15,8 +15,10 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Barang</th>
                                     <th>Nama Pembeli</th>
+                                    <th>Nama Barang</th>
+                                    <th>Jumlah</th>
+                                    <th>Harga Satuan</th>
                                     <th>Tanggal Transaksi</th>
                                     <th>Keterangan</th>
                                     <th class="text-center">Aksi</th>
@@ -33,8 +35,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="transaksi_modal">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade bd-example-modal-lg" id="transaksi_modal">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Modal title</h5>
@@ -44,8 +46,14 @@
                     <div class="modal-body">
                         <input type="hidden" class="form-control input-default" name="id_transaksi">
                         <div class="form-group">
+                            <label>Tanggal</label>
+                            <input name="tanggal" class="datepicker form-control" readonly placeholder="Masukkan Tanggal">
+                            <span class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
                             <label>Nama Barang</label>
-                            <select class="form-control" name="id_barang">
+                            <select class="form-control add-data"
+                                onchange="detail_barang(this.options[this.selectedIndex].value)" name="id_barang">
                                 <option value="">--Pilih Barang--</option>
                                 @foreach ($barang as $list)
                                     <option value="{{ $list->id_barang }}">{{ $list->nama_barang }}</option>
@@ -53,24 +61,47 @@
                             </select>
                             <span class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label>Nama Pembeli</label>
-                            <select class="form-control" name="id_pembeli">
-                                <option value="">--Pilih Pembeli--</option>
-                                @foreach ($pembeli as $list)
-                                    <option value="{{ $list->id_pembeli }}">{{ $list->nama_pembeli }}</option>
-                                @endforeach
-                            </select>
-                            <span class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nama Pembeli</label>
+                                    <select class="form-control add-data" name="id_pembeli">
+                                        <option value="">--Pilih Pembeli--</option>
+                                        @foreach ($pembeli as $list)
+                                            <option value="{{ $list->id_pembeli }}">{{ $list->nama_pembeli }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Jumlah</label>
+                                    <input type="number" class="form-control add-data input-default" min="1" value="1"
+                                        name="jumlah" placeholder="Masukkan Jumlah">
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Tanggal</label>
-                            <input name="tanggal" class="datepicker form-control" placeholder="Masukkan Tanggal">
-                            <span class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Harga Satuan (Rp)</label>
+                                    <input type="text" readonly class="form-control add-data input-default" name="harga"
+                                        placeholder="Harga Satuan">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Stok</label>
+                                    <input type="text" readonly class="form-control add-data input-default" name="stok"
+                                        placeholder="Stok">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Keterangan</label>
-                            <textarea class="form-control" rows="4" name="keterangan"
+                            <textarea class="form-control add-data" rows="4" name="keterangan"
                                 placeholder="Masukkan Keterangan"></textarea>
                             <span class="text-danger"></span>
                         </div>
