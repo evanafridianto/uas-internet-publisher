@@ -10,3 +10,7 @@
 <script src="{{ asset('admin/vendor/sweetalert2/dist/sweet-alert2/sweetalert2.min.js') }}"></script>
 <!-- Datatable -->
 <script src="{{ asset('admin/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
+
+<!-- bootstrap-datepicker -->
+<script src="{{ asset('admin/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}">
+</script>

@@ -22,4 +22,10 @@ class Barang extends Model
     {
         return $this->belongsTo('App\Models\Supplier');
     }
+
+    // relasi antara tb barang ke tb transaksi
+    public function transaksi()
+    {
+        return $this->hasMany('App\Models\Transaksi');
+    }
 }

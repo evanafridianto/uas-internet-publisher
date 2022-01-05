@@ -4,6 +4,7 @@ use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PembeliController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,3 +37,9 @@ Route::get('/supplier', [SupplierController::class, 'index']);
 Route::get('supplier/edit/{id}', [SupplierController::class, 'edit']);
 Route::post('supplier/save', [SupplierController::class, 'save']);
 Route::delete('supplier/delete/{id}', [SupplierController::class, 'delete']);
+
+//transaksi route
+Route::get('/transaksi', [TransaksiController::class, 'index']);
+Route::get('transaksi/edit/{id}', [TransaksiController::class, 'edit']);
+Route::post('transaksi/save', [TransaksiController::class, 'save']);
+Route::delete('transaksi/delete/{id}', [TransaksiController::class, 'delete']);

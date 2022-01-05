@@ -4,7 +4,13 @@
             <li class="nav-label first">Main Menu</li>
             <li><a href="/" aria-expanded="false"><i class="icon icon-home"></i><span
                         class="nav-text">Dashboard</span></a></li>
+            <li class="nav-label">Sales</li>
+            <li><a href="/transaksi" aria-expanded="false"><i class="icon icon-tag"></i><span
+                        class="nav-text">Transaksi</span></a></li>
+            <li><a href="/pembayaran" aria-expanded="false"><i class=" icon-screen-desktop"></i><span
+                        class="nav-text">Kasir/Pembayaran</span></a></li>
 
+            </li>
             <li class="nav-label">Database</li>
             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                         class=" icon-notebook"></i><span class="nav-text">Data Master</span></a>
@@ -12,14 +18,6 @@
                     <li><a href="/barang">Data Barang</a></li>
                     <li><a href="/pembeli">Data Pembeli</a></li>
                     <li><a href="/supplier">Data Supplier</a></li>
-                </ul>
-            </li>
-            <li class="nav-label">business</li>
-            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                        class="icon icon-tag"></i><span class="nav-text">Transaksi</span></a>
-                <ul aria-expanded="false">
-                    <li><a href="./uc-select2.html">Detail Transaksi</a></li>
-                    <li><a href="./uc-select2.html">Pembayaran</a></li>
                 </ul>
             </li>
             <li class="nav-label">User Managament</li>

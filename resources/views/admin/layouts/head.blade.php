@@ -12,7 +12,12 @@
     <link href="{{ asset('admin/vendor/sweetalert2/dist/sweet-alert2/sweetalert2.min.css') }}" rel="stylesheet">
     <!-- Datatable -->
     <link href="{{ asset('admin/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+    <!-- Material color picker -->
+    <link
+        href="{{ asset('admin/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
+        rel="stylesheet">
 
+    <link href="{{ asset('admin/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet">
 
 </head>
