@@ -47,15 +47,17 @@
                             <label>Nama Barang</label>
                             <input type="text" class="form-control input-default" name="nama_barang"
                                 placeholder="Masukkan Nama Barang">
-                                <span class="text-danger"></span>
+                            <span class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label>Harga</label>
+                            <label>Harga (Rp)</label>
                             <input type="text" class="form-control input-default" name="harga" placeholder="Masukkan Harga">
+                            <span class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label>Stok</label>
                             <input type="text" class="form-control input-default" name="stok" placeholder="Masukkan Stok">
+                            <span class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label>Supplier</label>
@@ -65,6 +67,7 @@
                                     <option value="{{ $list->id_supplier }}">{{ $list->nama_supplier }}</option>
                                 @endforeach
                             </select>
+                            <span class="text-danger"></span>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -118,6 +121,16 @@
                     },
                 ]
             })
+
+            //set input/select event when change value, remove class error and remove text text-danger
+            $("input").change(function() {
+                $(this).next().empty();
+            });
+
+            $("select").change(function() {
+                $(this).next().empty();
+            });
+
         });
 
         //reload datatable ajax
@@ -174,15 +187,16 @@
             // ajax adding data to database
             $.ajaxSetup({
                 headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  }
-              });
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $.ajax({
                 url: "barang/save",
                 type: "POST",
                 data: $('#barang_form').serialize(),
                 dataType: "JSON",
                 success: function(data) {
+
                     $('#barang_modal').modal('hide');
                     swal({
                         title: 'Sukses!',
@@ -198,24 +212,32 @@
                         }
                     )
                     //if success reload ajax table
-                      reload_table();
+                    reload_table();
                     $('#btnSave').text('Simpan'); //change button text
                     $('#btnSave').attr('disabled', false); //set button enable
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    swal({
-                        title: 'Error!',
-                        text: 'Server error!',
-                        type: 'error',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(
-                        function() {},
-                        // handling the promise rejection
-                        function(dismiss) {
-                            if (dismiss === 'timer') {}
-                        }
-                    )
+                error: function(response) {
+                    if (response.status == 404) {
+                        let responseData = JSON.parse(response.responseText);
+                        $.each(responseData, function(key, value) {
+                            $('[name="' + key + '"]').next().text(
+                                value); //select span form-text class set text error string
+                        });
+                    } else {
+                        swal({
+                            title: 'Error!',
+                            text: 'Server error!',
+                            type: 'error',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(
+                            function() {},
+                            // handling the promise rejection
+                            function(dismiss) {
+                                if (dismiss === 'timer') {}
+                            }
+                        )
+                    }
                     $('#btnSave').text('Simpan'); //change button text
                     $('#btnSave').attr('disabled', false); //set button enable
                 }
@@ -240,9 +262,9 @@
             }).then(function() {
                 $.ajaxSetup({
                     headers: {
-                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                      }
-                  });
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
                 $.ajax({
                     url: "barang/delete/" + id,
                     type: "DELETE",
@@ -289,6 +311,5 @@
                 }
             })
         }
-        </script>
+    </script>
 @endsection
-
