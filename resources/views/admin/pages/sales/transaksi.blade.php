@@ -8,7 +8,7 @@
                 </div>
                 <div class="card-body ">
                     <button type="button" class="btn btn-primary" onclick="add_transaksi()">+ Transaksi Baru</button>
-                    <button type="button" class="btn btn-info" onclick="reload_table()">Reload Tabel</button>
+                    <button type="button" class="btn btn-info" onclick="reload_table_trns()">Reload Tabel</button>
                     <hr>
                     <div class="table-responsive">
                         <table id="datatable" class="display" width="100%">
@@ -106,12 +106,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>Keterangan</label>
-                            <textarea class="form-control add-data" rows="4" name="keterangan"
-                                placeholder="Masukkan Keterangan"></textarea>
-                            <span class="text-danger"></span>
-                        </div>
+                        <select class="form-control" style="display: none" name="keterangan">
+                            <option value="Belum Dibayar">Belum Dibayar</option>
+                            <option value="Dibayar">Dibayar</option>
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>

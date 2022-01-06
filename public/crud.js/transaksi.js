@@ -1,5 +1,4 @@
 var table;
-
 $(function() {
     $.ajaxSetup({
         headers: {
@@ -97,8 +96,8 @@ function detail_barang(id) {
 }
 
 //reload datatable ajax
-function reload_table() {
-    table.ajax.reload(null, false);
+function reload_table_trns() {
+    $("#datatable").DataTable().ajax.reload();
 }
 
 // add
@@ -197,7 +196,7 @@ function save_transaksi() {
                 }
             );
             //if success reload ajax table
-            reload_table();
+            reload_table_trns();
             // $("#btnSave").text("Simpan"); //change button text
             $("#btnSave").html(
                 'Simpan <span class="btn-icon-right"><i class="fa fa-cart-plus"></i></span>'
@@ -278,7 +277,7 @@ function delete_transaksi(id) {
                         }
                     );
                     //if success reload ajax table
-                    reload_table();
+                    reload_table_trns();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     swal({

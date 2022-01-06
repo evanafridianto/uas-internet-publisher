@@ -45,11 +45,17 @@ class PembayaranController extends Controller
         $validator = Validator::make($request->all(), [
             'tgl_bayar' => 'required',
             'total_bayar' => 'required',
-            'id_transaksi' => 'required'
+            'id_transaksi' => 'required',
         ]);
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 404);
         };
+
+        if (Pembayaran::where('id_transaksi', $request->id_transaksi)->first()) {
+            return response()->json(['msg' => 'Transaksi ini telah dibayar'], 405);
+        }
+
         Pembayaran::updateOrCreate(
             [
                 'id_pembayaran' => $request->id_pembayaran

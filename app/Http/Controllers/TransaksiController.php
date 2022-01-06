@@ -14,7 +14,7 @@ class TransaksiController extends Controller
     public function index(Request $request)
     {
         $data = [
-            'title'  => 'Data Transaksi',
+            'title'  => 'Transaksi',
             'barang' => Barang::all(),
             'pembeli' => Pembeli::all()
         ];
@@ -40,6 +40,13 @@ class TransaksiController extends Controller
     public function edit($id)
     {
         $data = Transaksi::find($id);
+        return response()->json($data);
+    }
+
+    public function edit_ket(Request $request)
+    {
+        $data = Transaksi::where('id_transaksi', $request->id_transaksi)
+            ->update(['keterangan' => 'Dibayar']);
         return response()->json($data);
     }
 

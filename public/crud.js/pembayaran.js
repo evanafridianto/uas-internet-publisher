@@ -98,6 +98,7 @@ function add_pembayaran(id) {
 
 // save
 function save_pembayaran() {
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
     $("#btnKonfir").text("Menyimpan..."); //change button text
     $("#btnKonfir").attr("disabled", true); //set button disable
     // ajax adding data to database
@@ -127,6 +128,17 @@ function save_pembayaran() {
                 }
             );
             //if success reload ajax table
+            $.ajax({
+                url: "transaksi/edit_ket",
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    _token: CSRF_TOKEN,
+                    id_transaksi: $('[name="id_transaksi"]').val(),
+                },
+                success: function(response) {},
+            });
+            reload_table_trns();
             reload_table();
             $("#btnKonfir").text("Konfirmasi"); //change button text
             $("#btnKonfir").attr("disabled", false); //set button enable
@@ -138,6 +150,23 @@ function save_pembayaran() {
                     $('[name="' + key + '"]')
                         .next()
                         .text(value); //select span form-text class set text error string
+                });
+            } else if (response.status == 405) {
+                let responseData = JSON.parse(response.responseText);
+                $.each(responseData, function(key, value) {
+                    swal({
+                        title: "Warning!",
+                        text: value,
+                        type: "warning",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(
+                        function() {},
+                        // handling the promise rejection
+                        function(dismiss) {
+                            if (dismiss === "timer") {}
+                        }
+                    );
                 });
             } else {
                 swal({

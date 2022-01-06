@@ -17,7 +17,6 @@ class SemuaTabel extends Migration
         Schema::create('pembeli', function (Blueprint $table) {
             $table->increments('id_pembeli');
             $table->string('nama_pembeli', 250);
-            // $table->char('jk', 30);
             $table->enum('jk', ['L', 'P']);
             $table->char('no_telp', 20);
             $table->string('alamat', 250);
@@ -50,7 +49,7 @@ class SemuaTabel extends Migration
             $table->unsignedInteger('id_pembeli')->nullable();
             $table->integer('jumlah');
             $table->date('tanggal');
-            $table->string('keterangan', 250);
+            $table->enum('keterangan', ['Dibayar', 'Belum Dibayar']);
             $table->timestamps();
 
             $table->foreign('id_barang')->references('id_barang')->on('barang');
