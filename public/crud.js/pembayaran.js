@@ -164,7 +164,9 @@ function save_pembayaran() {
                         function() {},
                         // handling the promise rejection
                         function(dismiss) {
-                            if (dismiss === "timer") {}
+                            if (dismiss === "timer") {
+                                $("#pembayaran_modal").modal("hide");
+                            }
                         }
                     );
                 });

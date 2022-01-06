@@ -41,11 +41,8 @@ Route::delete('supplier/delete/{id}', [SupplierController::class, 'delete']);
 
 //transaksi route
 Route::get('/transaksi', [TransaksiController::class, 'index']);
-
 Route::get('transaksi/edit/{id}', [TransaksiController::class, 'edit']);
-
 Route::post('transaksi/edit_ket', [TransaksiController::class, 'edit_ket']);
-
 Route::post('transaksi/save', [TransaksiController::class, 'save']);
 Route::delete('transaksi/delete/{id}', [TransaksiController::class, 'delete']);
 
