@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
-    @section('head')
+@section('head')
     @include('admin.layouts.head')
 
-    @show
+@show
+
 <body>
 
     <!--*******************
@@ -30,7 +30,7 @@
             Nav header start
         ***********************************-->
         <div class="nav-header">
-            <a href="/" class="brand-logo">
+            <a href="/beranda" class="brand-logo">
                 <img class="logo-abbr" src="{{ asset('admin/images/logo.png') }}" alt="">
                 <img class="logo-compact" src="{{ asset('admin/images/logo-text.png') }}" alt="">
                 <img class="brand-title" src="{{ asset('admin/images/logo-text.png') }}" alt="">
@@ -38,7 +38,8 @@
 
             <div class="nav-control">
                 <div class="hamburger">
-                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                    <span class="line"></span><span class="line"></span><span
+                        class="line"></span>
                 </div>
             </div>
         </div>
@@ -50,7 +51,7 @@
             Header start
         ***********************************-->
         @section('header')
-        @include('admin.layouts.header')
+            @include('admin.layouts.header')
 
         @show
         <!--**********************************
@@ -61,7 +62,7 @@
             Sidebar start
         ***********************************-->
         @section('sidebar')
-        @include('admin.layouts.sidebar')
+            @include('admin.layouts.sidebar')
         @show
         <!--**********************************
             Sidebar end
@@ -72,7 +73,7 @@
         ***********************************-->
         <div class="content-body">
             <div class="container-fluid">
-                {{--  <div class="row page-titles mx-0">
+                {{-- <div class="row page-titles mx-0">
                     <div class="col-sm-6 p-md-0">
                         <div class="welcome-text">
                             <h4>Hi, welcome back!</h4>
@@ -85,7 +86,7 @@
                             <li class="breadcrumb-item active"><a href="javascript:void(0)">Blank</a></li>
                         </ol>
                     </div>
-                </div>  --}}
+                </div> --}}
                 @yield('content')
             </div>
         </div>
@@ -96,7 +97,7 @@
             Footer start
         ***********************************-->
         @section('footer')
-        @include('admin.layouts.footer')
+            @include('admin.layouts.footer')
         @show
         <!--**********************************
             Footer end
@@ -116,7 +117,7 @@
     ***********************************-->
 
     @section('javascript')
-    @include('admin.layouts.javascript')
+        @include('admin.layouts.javascript')
 
     @show
 

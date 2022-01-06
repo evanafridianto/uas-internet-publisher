@@ -19,35 +19,43 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [BerandaController::class, 'index']);
+// default route
+Route::get('/', function () {
+    return view('auth.login');
+});
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
-// barang route
-Route::get('/barang', [BarangController::class, 'index']);
-Route::get('barang/edit/{id}', [BarangController::class, 'edit']);
-Route::post('barang/save', [BarangController::class, 'save']);
-Route::delete('barang/delete/{id}', [BarangController::class, 'delete']);
+    // beranda route
+    Route::get('/beranda', [BerandaController::class, 'index']);
 
-// pembeli route
-Route::get('/pembeli', [PembeliController::class, 'index']);
-Route::get('pembeli/edit/{id}', [PembeliController::class, 'edit']);
-Route::post('pembeli/save', [PembeliController::class, 'save']);
-Route::delete('pembeli/delete/{id}', [PembeliController::class, 'delete']);
+    // barang route
+    Route::get('/barang', [BarangController::class, 'index']);
+    Route::get('barang/edit/{id}', [BarangController::class, 'edit']);
+    Route::post('barang/save', [BarangController::class, 'save']);
+    Route::delete('barang/delete/{id}', [BarangController::class, 'delete']);
 
-// supplier route
-Route::get('/supplier', [SupplierController::class, 'index']);
-Route::get('supplier/edit/{id}', [SupplierController::class, 'edit']);
-Route::post('supplier/save', [SupplierController::class, 'save']);
-Route::delete('supplier/delete/{id}', [SupplierController::class, 'delete']);
+    // pembeli route
+    Route::get('/pembeli', [PembeliController::class, 'index']);
+    Route::get('pembeli/edit/{id}', [PembeliController::class, 'edit']);
+    Route::post('pembeli/save', [PembeliController::class, 'save']);
+    Route::delete('pembeli/delete/{id}', [PembeliController::class, 'delete']);
 
-//transaksi route
-Route::get('/transaksi', [TransaksiController::class, 'index']);
-Route::get('transaksi/edit/{id}', [TransaksiController::class, 'edit']);
-Route::post('transaksi/edit_ket', [TransaksiController::class, 'edit_ket']);
-Route::post('transaksi/save', [TransaksiController::class, 'save']);
-Route::delete('transaksi/delete/{id}', [TransaksiController::class, 'delete']);
+    // supplier route
+    Route::get('/supplier', [SupplierController::class, 'index']);
+    Route::get('supplier/edit/{id}', [SupplierController::class, 'edit']);
+    Route::post('supplier/save', [SupplierController::class, 'save']);
+    Route::delete('supplier/delete/{id}', [SupplierController::class, 'delete']);
 
-//pembayaran route
-Route::get('/pembayaran', [PembayaranController::class, 'index']);
-Route::get('/pembayaran/detail_bayar/{id}', [PembayaranController::class, 'detail_bayar']);
-Route::post('pembayaran/save', [PembayaranController::class, 'save']);
-Route::delete('pembayaran/delete/{id}', [PembayaranController::class, 'delete']);
+    //transaksi route
+    Route::get('/transaksi', [TransaksiController::class, 'index']);
+    Route::get('transaksi/edit/{id}', [TransaksiController::class, 'edit']);
+    Route::post('transaksi/edit_ket', [TransaksiController::class, 'edit_ket']);
+    Route::post('transaksi/save', [TransaksiController::class, 'save']);
+    Route::delete('transaksi/delete/{id}', [TransaksiController::class, 'delete']);
+
+    //pembayaran route
+    Route::get('/pembayaran', [PembayaranController::class, 'index']);
+    Route::get('/pembayaran/detail_bayar/{id}', [PembayaranController::class, 'detail_bayar']);
+    Route::post('pembayaran/save', [PembayaranController::class, 'save']);
+    Route::delete('pembayaran/delete/{id}', [PembayaranController::class, 'delete']);
+});
