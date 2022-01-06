@@ -28,7 +28,7 @@ class TransaksiController extends Controller
                 ->addColumn('action', function ($row) {
                     $btn = '<div class="text-center"><button type="button" class="btn btn-success btn-sm" onclick="edit_transaksi(' . $row->id_transaksi . ')">Edit</button>
                            <button type="button" class="btn btn-danger  btn-sm" onclick="delete_transaksi(' . $row->id_transaksi . ')">Hapus</button>
-                           <button type="button" class="btn btn-info  btn-sm" onclick="add_pembayaran(' . $row->id_transaksi . ')">Bayar</button></div>';
+                           <button type="button" class="btn btn-info  btn-sm" onclick="add_pembayaran(' . $row->id_transaksi . ')">Checkout</button></div>';
                     return $btn;
                 })
                 ->rawColumns(['action'])

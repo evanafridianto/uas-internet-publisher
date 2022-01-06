@@ -7,8 +7,8 @@
             <li class="nav-label">Sales</li>
             <li><a href="/transaksi" aria-expanded="false"><i class="icon icon-tag"></i><span
                         class="nav-text">Transaksi</span></a></li>
-            <li><a href="/pembayaran" aria-expanded="false"><i class=" icon-screen-desktop"></i><span
-                        class="nav-text">Data Pembayaran</span></a></li>
+            <li><a href="/pembayaran" aria-expanded="false"><i class=" icon-wallet"></i><span
+                        class="nav-text">Data Penjualan</span></a></li>
 
             </li>
             <li class="nav-label">Database</li>

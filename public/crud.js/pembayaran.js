@@ -7,7 +7,7 @@ $(function() {
         },
     });
 
-    table = $("#datatable").DataTable({
+    table = $("#datatable_pemb").DataTable({
         processing: true,
         serverSide: true,
         ajax: "",
@@ -16,28 +16,20 @@ $(function() {
                 name: "DT_RowIndex",
             },
             {
-                data: "nama_pembeli",
-                name: "nama_pembeli",
-            },
-            {
-                data: "nama_barang",
-                name: "nama_barang",
-            },
-            {
-                data: "jumlah",
-                name: "jumlah",
-            },
-            {
-                data: "harga",
-                name: "harga",
+                data: "id_transaksi",
+                name: "id_transaksi",
             },
             {
                 data: "tanggal",
                 name: "tanggal",
             },
             {
-                data: "keterangan",
-                name: "keterangan",
+                data: "tgl_bayar",
+                name: "tgl_bayar",
+            },
+            {
+                data: "total_bayar",
+                name: "total_bayar",
             },
             {
                 data: "action",
@@ -69,107 +61,45 @@ $(function() {
     });
 });
 
-function detail_barang(id) {
-    $.ajax({
-        url: "barang/edit/" + id,
-        type: "GET",
-        dataType: "JSON",
-        success: function(data) {
-            $('[name="harga"]').val(data.harga);
-            $('[name="stok"]').val(data.stok);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            swal({
-                title: "Error!",
-                text: "Server error!",
-                type: "error",
-                showConfirmButton: false,
-                timer: 1500,
-            }).then(
-                function() {},
-                // handling the promise rejection
-                function(dismiss) {
-                    if (dismiss === "timer") {}
-                }
-            );
-        },
-    });
-}
-
 //reload datatable ajax
 function reload_table() {
     table.ajax.reload(null, false);
 }
 
-// add
-function add_transaksi() {
+// add pembayaran from transaksi
+function add_pembayaran(id) {
     const t = new Date();
     const date = ("0" + t.getDate()).slice(-2);
     const month = ("0" + (t.getMonth() + 1)).slice(-2);
     const year = t.getFullYear();
     let today = year + "-" + month + "-" + date;
-    $('[name="tanggal"]').val(today);
+    $('[name="tgl_bayar"]').val(today);
 
+    $('[name="id_pembayaran"]').val("");
     $(".text-danger").empty(); // clear error string
-    $("#transaksi_modal").modal("show"); // show bootstrap modal
-    $(".modal-title").text("Transaksi Baru"); // Set Title to Bootstrap modal title
-    $(".add-data").val(""); // reset form on modals
-    $('[name="id_transaksi"]').val("");
-}
-// edit
-function edit_transaksi(id) {
-    $(".text-danger").empty(); // clear error string
-    $("#transaksi_modal").modal("show"); // show bootstrap modal
-    $(".modal-title").text("Edit Transaksi"); // Set title to Bootstrap modal title
-    $("#transaksi_form")[0].reset(); // reset form on modals
-    //Ajax Load data from ajax
+    $("#pembayaran_modal").modal("show"); // show bootstrap modal
+    $(".modal-title").text("Detail Pembayaran"); // Set Title to Bootstrap modal title
     $.ajax({
-        url: "transaksi/edit/" + id,
+        url: "pembayaran/detail_bayar/" + id,
         type: "GET",
         dataType: "JSON",
         success: function(data) {
+            let total = data.jumlah * data.harga;
             $('[name="id_transaksi"]').val(data.id_transaksi);
             $('[name="id_barang"]').val(data.id_barang);
             $('[name="id_pembeli"]').val(data.id_pembeli);
+            $('[name="harga"]').val(data.harga);
             $('[name="jumlah"]').val(data.jumlah);
-            $('[name="tanggal"]').val(data.tanggal);
-            $('[name="keterangan"]').val(data.keterangan);
 
-            $.ajax({
-                url: "barang/edit/" + $('[name="id_barang"]').val(),
-                type: "GET",
-                dataType: "JSON",
-                success: function(data) {
-                    $('[name="harga"]').val(data.harga);
-                    $('[name="stok"]').val(data.stok);
-                },
-            });
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            swal({
-                title: "Error!",
-                text: "Server error!",
-                type: "error",
-                showConfirmButton: false,
-                timer: 1500,
-            }).then(
-                function() {},
-                // handling the promise rejection
-                function(dismiss) {
-                    if (dismiss === "timer") {}
-                }
-            );
+            $('[name="total_bayar"]').val(total);
         },
     });
 }
 
 // save
-function save_transaksi() {
-    // $("#btnSave").text("Menyimpan..."); //change button text
-    $("#btnSave").html(
-        'Menyimpan... <span class="btn-icon-right"><i class="fa fa-cart-plus"></i></span>'
-    );
-    $("#btnSave").attr("disabled", true); //set button disable
+function save_pembayaran() {
+    $("#btnKonfir").text("Menyimpan..."); //change button text
+    $("#btnKonfir").attr("disabled", true); //set button disable
     // ajax adding data to database
     $.ajaxSetup({
         headers: {
@@ -177,15 +107,15 @@ function save_transaksi() {
         },
     });
     $.ajax({
-        url: "transaksi/save",
+        url: "pembayaran/save",
         type: "POST",
-        data: $("#transaksi_form").serialize(),
+        data: $("#pembayaran_form").serialize(),
         dataType: "JSON",
         success: function(data) {
-            $("#transaksi_modal").modal("hide");
+            $("#pembayaran_modal").modal("hide");
             swal({
                 title: "Sukses!",
-                text: "Data berhasil disimpan!",
+                text: "Data penjualan berhasil disimpan!",
                 type: "success",
                 showConfirmButton: false,
                 timer: 1500,
@@ -198,11 +128,8 @@ function save_transaksi() {
             );
             //if success reload ajax table
             reload_table();
-            // $("#btnSave").text("Simpan"); //change button text
-            $("#btnSave").html(
-                'Simpan <span class="btn-icon-right"><i class="fa fa-cart-plus"></i></span>'
-            );
-            $("#btnSave").attr("disabled", false); //set button enable
+            $("#btnKonfir").text("Konfirmasi"); //change button text
+            $("#btnKonfir").attr("disabled", false); //set button enable
         },
         error: function(response) {
             if (response.status == 404) {
@@ -227,16 +154,14 @@ function save_transaksi() {
                     }
                 );
             }
-            $("#btnSave").html(
-                'Simpan <span class="btn-icon-right"><i class="fa fa-cart-plus"></i></span>'
-            );
-            $("#btnSave").attr("disabled", false); //set button enable
+            $("#btnKonfir").text("Konfirmasi"); //change button text
+            $("#btnKonfir").attr("disabled", false); //set button enable
         },
     });
 }
 
 // delete
-function delete_transaksi(id) {
+function delete_pembayaran(id) {
     swal({
         title: "Anda yakin?",
         text: "Data akan dihapus permanen!",
@@ -260,7 +185,7 @@ function delete_transaksi(id) {
                 },
             });
             $.ajax({
-                url: "transaksi/delete/" + id,
+                url: "pembayaran/delete/" + id,
                 type: "DELETE",
                 dataType: "JSON",
                 success: function(data) {

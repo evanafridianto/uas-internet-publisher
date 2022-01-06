@@ -45,23 +45,15 @@
                 <form id="transaksi_form">
                     <div class="modal-body">
                         <input type="hidden" class="form-control input-default" name="id_transaksi">
-                        <div class="form-group">
-                            <label>Tanggal</label>
-                            <input name="tanggal" class="datepicker form-control" readonly placeholder="Masukkan Tanggal">
-                            <span class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label>Nama Barang</label>
-                            <select class="form-control add-data"
-                                onchange="detail_barang(this.options[this.selectedIndex].value)" name="id_barang">
-                                <option value="">--Pilih Barang--</option>
-                                @foreach ($barang as $list)
-                                    <option value="{{ $list->id_barang }}">{{ $list->nama_barang }}</option>
-                                @endforeach
-                            </select>
-                            <span class="text-danger"></span>
-                        </div>
                         <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Tanggal Transaksi</label>
+                                    <input name="tanggal" class="datepicker form-control" readonly
+                                        placeholder="Masukkan Tanggal">
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Nama Pembeli</label>
@@ -69,6 +61,21 @@
                                         <option value="">--Pilih Pembeli--</option>
                                         @foreach ($pembeli as $list)
                                             <option value="{{ $list->id_pembeli }}">{{ $list->nama_pembeli }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nama Barang</label>
+                                    <select class="form-control add-data"
+                                        onchange="detail_barang(this.options[this.selectedIndex].value)" name="id_barang">
+                                        <option value="">--Pilih Barang--</option>
+                                        @foreach ($barang as $list)
+                                            <option value="{{ $list->id_barang }}">{{ $list->nama_barang }}</option>
                                         @endforeach
                                     </select>
                                     <span class="text-danger"></span>
@@ -86,15 +93,15 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Harga Satuan (Rp)</label>
-                                    <input type="text" readonly class="form-control add-data input-default" name="harga"
+                                    <label class="text-warning">Harga Satuan (Rp)</label>
+                                    <input type="text" disabled class="form-control add-data input-default" name="harga"
                                         placeholder="Harga Satuan">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Stok</label>
-                                    <input type="text" readonly class="form-control add-data input-default" name="stok"
+                                    <label class="text-warning">Stok</label>
+                                    <input type="text" disabled class="form-control add-data input-default" name="stok"
                                         placeholder="Stok">
                                 </div>
                             </div>
@@ -108,12 +115,16 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="btnSave"
-                            onclick="save_transaksi()">Simpan</button>
+                        <button type="button" class="btn btn-primary" id="btnSave" onclick="save_transaksi()">Simpan<span
+                                class="btn-icon-right"><i class="fa fa-cart-plus"></i></span></button>
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <script src="{{ asset('crud.js/transaksi.js') }}"></script>
+@section('form_pembayaran')
+    @include('admin.pages.sales.form_pembayaran')
+@show
 @endsection

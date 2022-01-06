@@ -22,7 +22,7 @@ class PembayaranController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $btn = '<div class="text-center"><button type="button" class="btn btn-success btn-sm" onclick="edit_pembayaran(' . $row->id_pembayaran . ')">Edit</button>
+                    $btn = '<div class="text-center">
                            <button type="button" class="btn btn-danger  btn-sm" onclick="delete_pembayaran(' . $row->id_pembayaran . ')">Hapus</button></div>';
                     return $btn;
                 })
@@ -32,34 +32,32 @@ class PembayaranController extends Controller
         return view('admin.pages.sales.pembayaran', $data);
     }
 
-    public function edit($id)
+    public function detail_bayar($id)
     {
-        $data = Pembayaran::find($id);
+        $data = Transaksi::leftJoin('barang', 'barang.id_barang', '=', 'transaksi.id_barang')
+            ->leftJoin('pembeli', 'pembeli.id_pembeli', '=', 'transaksi.id_pembeli')
+            ->find($id);
         return response()->json($data);
     }
 
     public function save(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id_barang' => 'required',
-            'id_pembeli' => 'required',
-            'jumlah' => 'required',
-            'tanggal' => 'required',
-            'keterangan' => 'required',
+            'tgl_bayar' => 'required',
+            'total_bayar' => 'required',
+            'id_transaksi' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 404);
         };
         Pembayaran::updateOrCreate(
             [
-                'id_transaksi' => $request->id_transaksi
+                'id_pembayaran' => $request->id_pembayaran
             ],
             [
-                'id_barang' => $request->id_barang,
-                'id_pembeli' => $request->id_pembeli,
-                'jumlah' => $request->jumlah,
-                'tanggal' => $request->tanggal,
-                'keterangan' => $request->keterangan
+                'tgl_bayar' => $request->tgl_bayar,
+                'total_bayar' => $request->total_bayar,
+                'id_transaksi' => $request->id_transaksi
             ]
         );
         return response()->json(['status' => true]);

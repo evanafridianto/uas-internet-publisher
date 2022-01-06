@@ -12,7 +12,9 @@ class Pembayaran extends Model
     protected $table = 'pembayaran';
     protected $primaryKey = 'id_pembayaran';
 
-    protected $fillable =  [];
+    protected $fillable =  [
+        'tgl_bayar', 'total_bayar', 'id_transaksi'
+    ];
 
     // relasi antara tb pembayaran ke tb transaksi
     public function transaksi()
