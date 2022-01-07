@@ -8,6 +8,7 @@ use App\Models\Pembeli;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Validator;
+use PDF;
 
 class TransaksiController extends Controller
 {
@@ -26,9 +27,16 @@ class TransaksiController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $btn = '<div class="text-center"><button type="button" class="btn btn-success btn-sm" onclick="edit_transaksi(' . $row->id_transaksi . ')">Edit</button>
-                           <button type="button" class="btn btn-danger  btn-sm" onclick="delete_transaksi(' . $row->id_transaksi . ')">Hapus</button>
-                           <button type="button" class="btn btn-info  btn-sm" onclick="add_pembayaran(' . $row->id_transaksi . ')">Checkout</button></div>';
+                    if ($row->keterangan == 'Dibayar') {
+                        $btn = '<div class="text-center"><button type="button" class="btn btn-success btn-sm" onclick="edit_transaksi(' . $row->id_transaksi . ')">Edit</button>
+                        <button type="button" class="btn btn-danger  btn-sm" onclick="delete_transaksi(' . $row->id_transaksi . ')">Hapus</button>
+                        <a href="transaksi/cetak/' . $row->id_transaksi . '" class="btn btn-info  target="_BLANK" btn-sm" >Cetak</a></div>';
+                    } else {
+
+                        $btn = '<div class="text-center"><button type="button" class="btn btn-success btn-sm" onclick="edit_transaksi(' . $row->id_transaksi . ')">Edit</button>
+                        <button type="button" class="btn btn-danger  btn-sm" onclick="delete_transaksi(' . $row->id_transaksi . ')">Hapus</button>
+                        <button type="button" class="btn btn-warning  btn-sm" onclick="add_pembayaran(' . $row->id_transaksi . ')">Checkout</button></div>';
+                    }
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -41,6 +49,17 @@ class TransaksiController extends Controller
     {
         $data = Transaksi::find($id);
         return response()->json($data);
+    }
+
+    public function cetak_pdf($id)
+    {
+        $data = Transaksi::leftJoin('barang', 'barang.id_barang', '=', 'transaksi.id_barang')
+            ->leftJoin('pembeli', 'pembeli.id_pembeli', '=', 'transaksi.id_pembeli')
+            ->find($id);
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('admin.pages.sales.pdf_transaksi_pembeli');
+        return $pdf->download("transaksi_$id.pdf");
     }
 
     public function update_ket(Request $request)

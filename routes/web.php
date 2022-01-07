@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::post('transaksi/update_stok', [TransaksiController::class, 'update_stok']);
     Route::post('transaksi/save', [TransaksiController::class, 'save']);
     Route::delete('transaksi/delete/{id}', [TransaksiController::class, 'delete']);
+    Route::get('transaksi/cetak/{id}', [TransaksiController::class, 'cetak_pdf']);
 
     //pembayaran route
     Route::get('/pembayaran', [PembayaranController::class, 'index']);
