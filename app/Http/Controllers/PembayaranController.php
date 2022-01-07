@@ -52,8 +52,13 @@ class PembayaranController extends Controller
             return response()->json($validator->errors(), 404);
         };
 
-        if (Pembayaran::where('id_transaksi', $request->id_transaksi)->first()) {
-            return response()->json(['msg' => 'Transaksi ini telah dibayar'], 405);
+        $ket = Transaksi::select("*")
+            ->where('id_transaksi', $request->id_transaksi)
+            ->get();
+        foreach ($ket as $key) {
+            if ($key->keterangan == 'Dibayar') {
+                return response()->json(['msg' => 'Transaksi ini telah dibayar'], 405);
+            }
         }
 
         Pembayaran::updateOrCreate(

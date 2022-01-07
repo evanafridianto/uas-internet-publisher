@@ -129,12 +129,24 @@ function save_pembayaran() {
             );
             //if success reload ajax table
             $.ajax({
-                url: "transaksi/edit_ket",
+                url: "transaksi/update_ket",
                 type: "POST",
                 dataType: "JSON",
                 data: {
                     _token: CSRF_TOKEN,
                     id_transaksi: $('[name="id_transaksi"]').val(),
+                },
+                success: function(response) {},
+            });
+
+            $.ajax({
+                url: "transaksi/update_stok",
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    _token: CSRF_TOKEN,
+                    id_barang: $('[name="id_barang"]').val(),
+                    jumlah: $('[name="jumlah"]').val(),
                 },
                 success: function(response) {},
             });
@@ -164,12 +176,11 @@ function save_pembayaran() {
                         function() {},
                         // handling the promise rejection
                         function(dismiss) {
-                            if (dismiss === "timer") {
-                                $("#pembayaran_modal").modal("hide");
-                            }
+                            if (dismiss === "timer") {}
                         }
                     );
                 });
+                $("#pembayaran_modal").modal("hide");
             } else {
                 swal({
                     title: "Error!",

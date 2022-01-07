@@ -43,10 +43,16 @@ class TransaksiController extends Controller
         return response()->json($data);
     }
 
-    public function edit_ket(Request $request)
+    public function update_ket(Request $request)
     {
         $data = Transaksi::where('id_transaksi', $request->id_transaksi)
             ->update(['keterangan' => 'Dibayar']);
+        return response()->json($data);
+    }
+    public function update_stok(Request $request)
+    {
+        $data = Barang::where('id_barang', $request->id_barang)
+            ->update(['stok' => -'$request->jumlah']);
         return response()->json($data);
     }
 
