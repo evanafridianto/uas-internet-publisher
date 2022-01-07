@@ -59,7 +59,7 @@ class TransaksiController extends Controller
 
         view()->share('data', $data);
         $pdf = PDF::loadview('admin.pages.sales.pdf_transaksi_pembeli');
-        return $pdf->download("transaksi_$id.pdf");
+        return $pdf->setPaper('a5', 'landscape')->download("transaksi_$id.pdf");
     }
 
     public function update_ket(Request $request)
