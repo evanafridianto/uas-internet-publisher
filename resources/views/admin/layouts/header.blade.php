@@ -27,7 +27,8 @@
                                     <span class="success"><i class="ti-user"></i></span>
                                     <div class="media-body">
                                         <a href="#">
-                                            <p><strong>Martin</strong> has added a <strong>customer</strong> Successfully
+                                            <p><strong>Martin</strong> has added a <strong>customer</strong>
+                                                Successfully
                                             </p>
                                         </a>
                                     </div>
@@ -65,7 +66,8 @@
                                     <span class="success"><i class="ti-image"></i></span>
                                     <div class="media-body">
                                         <a href="#">
-                                            <p><strong> James.</strong> has added a<strong>customer</strong> Successfully
+                                            <p><strong> James.</strong> has added a<strong>customer</strong>
+                                                Successfully
                                             </p>
                                         </a>
                                     </div>
@@ -81,11 +83,13 @@
                             <i class="mdi mdi-account"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="./app-profile.html" class="dropdown-item">
+                            {{-- <a href="./app-profile.html" class="dropdown-item">
                                 <i class="icon-user"></i>
                                 <span class="ml-2">Profile </span>
-                            </a>
-                            <a href="./page-login.html" class="dropdown-item">
+                            </a> --}}
+                            <a href="{{ route('logout') }}"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                class="dropdown-item">
                                 <i class="icon-key"></i>
                                 <span class="ml-2">Logout </span>
                             </a>

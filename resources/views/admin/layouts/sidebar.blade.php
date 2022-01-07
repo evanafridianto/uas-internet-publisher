@@ -22,13 +22,13 @@
                     </ul>
                 </li>
                 <li class="nav-label">User Managament</li>
-                <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                {{-- <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                             class="icon icon-settings"></i><span class="nav-text">Setting</span></a>
                     <ul aria-expanded="false">
                         <li><a href="./page-login.html">Profil</a></li>
                         <li><a href="./page-register.html">Ganti Password</a></li>
                     </ul>
-                </li>
+                </li> --}}
                 <li><a href="{{ route('logout') }}"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                         aria-expanded="false"><i class="icon-logout"></i><span

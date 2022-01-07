@@ -49,11 +49,12 @@ class TransaksiController extends Controller
             ->update(['keterangan' => 'Dibayar']);
         return response()->json($data);
     }
+
     public function update_stok(Request $request)
     {
-        $data = Barang::where('id_barang', $request->id_barang)
-            ->update(['stok' => -'$request->jumlah']);
-        return response()->json($data);
+        $id_barang = Barang::select("stok")->find($request->id_barang);
+        $update = Barang::find($request->id_barang)->update(['stok' => $id_barang->stok - $request->jumlah]);
+        return response()->json($update);
     }
 
     public function save(Request $request)
