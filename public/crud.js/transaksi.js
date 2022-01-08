@@ -15,20 +15,20 @@ $(function() {
                 name: "DT_RowIndex",
             },
             {
-                data: "nama_pembeli",
-                name: "nama_pembeli",
+                data: "pembeli.nama_pembeli",
+                name: "pembeli.nama_pembeli",
             },
             {
-                data: "nama_barang",
-                name: "nama_barang",
+                data: "barang.nama_barang",
+                name: "barang.nama_barang",
             },
             {
                 data: "jumlah",
                 name: "jumlah",
             },
             {
-                data: "harga",
-                name: "harga",
+                data: "barang.harga",
+                name: "barang.harga",
             },
             {
                 data: "tanggal",
@@ -68,14 +68,92 @@ $(function() {
     });
 });
 
+// detail barang
+var i = 0;
+
 function detail_barang(id) {
+    // $('[name="id_barang"]').prop("selectedIndex", 0);
     $.ajax({
         url: "barang/edit/" + id,
         type: "GET",
         dataType: "JSON",
         success: function(data) {
-            $('[name="harga"]').val(data.harga);
-            $('[name="stok"]').val(data.stok);
+            i++;
+
+            $("#tabel-beli").append(
+                "<tr><td>" +
+                data.nama_barang +
+                '<input name="multi[' +
+                i +
+                '][id_barang]" value="' +
+                data.id_barang +
+                '" type="hidden"><input type="hidden" name="multi[' +
+                i +
+                '][tanggal]" class="datepicker form-control"><input type="hidden" name="multi[' +
+                i +
+                '][id_pembeli]" value="' +
+                $("#id_pembeli").find(":selected").val() +
+                '" class="form-control"></td><td>' +
+                data.stok +
+                '</td><td><div class="btn-group mb-2 btn-group-sm"><button class="btn btn-light btn-min" type="button">-</button><input name="multi[' +
+                i +
+                '][jumlah]" class="form-control jumlah text-center" value="1" min="1"><button class="btn btn-light btn-plus" type="button">+</button></div></td><td>' +
+                data.harga +
+                '</td><td class="total"></td><td><input class="form-control" name="multi[' +
+                i +
+                '][keterangan]"></td><td><button type="button" class="btn btn-danger btn-xs remove-tr">Hapus</button></td></tr>'
+            );
+
+            $(document).on("click", ".remove-tr", function() {
+                $(this).parents("tr").remove();
+            });
+            $(".btn-min").on("click", function(e) {
+                e.preventDefault();
+                var $parent = $(this).closest("tr");
+                var $input = $parent.find(".jumlah");
+                var $total = $parent.find(".total");
+                var value = parseInt($input.val());
+
+                if (value >= 1) {
+                    value = value - 1;
+                } else {
+                    value = 1;
+                }
+                if (value < 1) {
+                    $(this).parents("tr").remove();
+                }
+
+                $input.val(value);
+                $total.html(value * data.harga);
+                calcTotal();
+            });
+
+            $(".total").html($(".jumlah").val() * data.harga);
+            $("#total_bayar").html("Rp. " + parseInt($(".total").html()));
+            $(".btn-plus").on("click", function(e) {
+                e.preventDefault();
+                var $parent = $(this).closest("tr");
+                var $input = $parent.find(".jumlah");
+                var $total = $parent.find(".total");
+                var value = parseInt($input.val());
+
+                if (value < 100) {
+                    value = value + 1;
+                } else {
+                    value = 100;
+                }
+
+                $input.val(value);
+                $total.html(value * data.harga);
+                calcTotal();
+            });
+
+            const t = new Date();
+            const date = ("0" + t.getDate()).slice(-2);
+            const month = ("0" + (t.getMonth() + 1)).slice(-2);
+            const year = t.getFullYear();
+            let today = year + "-" + month + "-" + date;
+            $(".datepicker").val(today);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             swal({
@@ -93,6 +171,14 @@ function detail_barang(id) {
             );
         },
     });
+}
+
+function calcTotal() {
+    let total = 0;
+    $(".total").each(function() {
+        total += parseInt($(this).html());
+    });
+    $("#total_bayar").html("Rp. " + total);
 }
 
 //reload datatable ajax
@@ -102,72 +188,29 @@ function reload_table_trns() {
 
 // add
 function add_transaksi() {
-    const t = new Date();
-    const date = ("0" + t.getDate()).slice(-2);
-    const month = ("0" + (t.getMonth() + 1)).slice(-2);
-    const year = t.getFullYear();
-    let today = year + "-" + month + "-" + date;
-    $('[name="tanggal"]').val(today);
-
     $(".text-danger").empty(); // clear error string
     $("#transaksi_modal").modal("show"); // show bootstrap modal
     $(".modal-title").text("Transaksi Baru"); // Set Title to Bootstrap modal title
     $(".add-data").val(""); // reset form on modals
     $('[name="id_transaksi"]').val("");
-}
-// edit
-function edit_transaksi(id) {
-    $(".text-danger").empty(); // clear error string
-    $("#transaksi_modal").modal("show"); // show bootstrap modal
-    $(".modal-title").text("Edit Transaksi"); // Set title to Bootstrap modal title
     $("#transaksi_form")[0].reset(); // reset form on modals
-    //Ajax Load data from ajax
-    $.ajax({
-        url: "transaksi/edit/" + id,
-        type: "GET",
-        dataType: "JSON",
-        success: function(data) {
-            $('[name="id_transaksi"]').val(data.id_transaksi);
-            $('[name="id_barang"]').val(data.id_barang);
-            $('[name="id_pembeli"]').val(data.id_pembeli);
-            $('[name="jumlah"]').val(data.jumlah);
-            $('[name="tanggal"]').val(data.tanggal);
-            $('[name="keterangan"]').val(data.keterangan);
 
-            $.ajax({
-                url: "barang/edit/" + $('[name="id_barang"]').val(),
-                type: "GET",
-                dataType: "JSON",
-                success: function(data) {
-                    $('[name="harga"]').val(data.harga);
-                    $('[name="stok"]').val(data.stok);
-                },
-            });
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            swal({
-                title: "Error!",
-                text: "Server error!",
-                type: "error",
-                showConfirmButton: false,
-                timer: 1500,
-            }).then(
-                function() {},
-                // handling the promise rejection
-                function(dismiss) {
-                    if (dismiss === "timer") {}
-                }
-            );
-        },
+    $("#pilih-barang").prop(
+        "style",
+        "display:none", // button delete all hide
+        true
+    );
+    // show barang
+    $("#id_pembeli").change(function(e) {
+        e.preventDefault();
+        $("#pilih-barang").removeAttr("style");
     });
 }
 
 // save
 function save_transaksi() {
-    // $("#btnSave").text("Menyimpan..."); //change button text
-    $("#btnSave").html(
-        'Menyimpan... <span class="btn-icon-right"><i class="fa fa-cart-plus"></i></span>'
-    );
+    // console.log($("#transaksi_form").serialize());
+    $("#btnSave").html("Diproses...");
     $("#btnSave").attr("disabled", true); //set button disable
     // ajax adding data to database
     $.ajaxSetup({
@@ -175,11 +218,12 @@ function save_transaksi() {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
     $.ajax({
         url: "transaksi/save",
         type: "POST",
-        data: $("#transaksi_form").serialize(),
         dataType: "JSON",
+        data: $("#transaksi_form").serializeArray(),
         success: function(data) {
             $("#transaksi_modal").modal("hide");
             swal({
@@ -198,12 +242,11 @@ function save_transaksi() {
             //if success reload ajax table
             reload_table_trns();
             // $("#btnSave").text("Simpan"); //change button text
-            $("#btnSave").html(
-                'Simpan <span class="btn-icon-right"><i class="fa fa-cart-plus"></i></span>'
-            );
+            $("#btnSave").html("Bayar sekarang");
             $("#btnSave").attr("disabled", false); //set button enable
         },
         error: function(response) {
+            console.log(response);
             if (response.status == 404) {
                 let responseData = JSON.parse(response.responseText);
                 $.each(responseData, function(key, value) {
@@ -226,9 +269,7 @@ function save_transaksi() {
                     }
                 );
             }
-            $("#btnSave").html(
-                'Simpan <span class="btn-icon-right"><i class="fa fa-cart-plus"></i></span>'
-            );
+            $("#btnSave").html("Bayar sekrang");
             $("#btnSave").attr("disabled", false); //set button enable
         },
     });

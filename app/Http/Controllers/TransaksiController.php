@@ -15,28 +15,20 @@ class TransaksiController extends Controller
     public function index(Request $request)
     {
         $data = [
-            'title'  => 'Transaksi',
+            'title'  => 'Data Transaksi',
             'barang' => Barang::all(),
-            'pembeli' => Pembeli::all()
+            'pembeli' => Pembeli::all(),
         ];
         if ($request->ajax()) {
-            $data = Transaksi::leftJoin('barang', 'barang.id_barang', '=', 'transaksi.id_barang')
-                ->leftJoin('pembeli', 'pembeli.id_pembeli', '=', 'transaksi.id_pembeli')
+            $data = Transaksi::with('barang')
+                ->with('pembeli')
                 ->orderBy('id_transaksi', 'asc')
                 ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    if ($row->keterangan == 'Dibayar') {
-                        $btn = '<div class="text-center"><button type="button" class="btn btn-success btn-sm" onclick="edit_transaksi(' . $row->id_transaksi . ')">Edit</button>
-                        <button type="button" class="btn btn-danger  btn-sm" onclick="delete_transaksi(' . $row->id_transaksi . ')">Hapus</button>
-                        <a href="transaksi/cetak/' . $row->id_transaksi . '" class="btn btn-info  target="_BLANK" btn-sm" >Cetak</a></div>';
-                    } else {
 
-                        $btn = '<div class="text-center"><button type="button" class="btn btn-success btn-sm" onclick="edit_transaksi(' . $row->id_transaksi . ')">Edit</button>
-                        <button type="button" class="btn btn-danger  btn-sm" onclick="delete_transaksi(' . $row->id_transaksi . ')">Hapus</button>
-                        <button type="button" class="btn btn-warning  btn-sm" onclick="add_pembayaran(' . $row->id_transaksi . ')">Checkout</button></div>';
-                    }
+                    $btn = '<div class="text-center"><button type="button" class="btn btn-danger  btn-sm" onclick="delete_transaksi(' . $row->id_transaksi . ')">Hapus</div>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -44,6 +36,7 @@ class TransaksiController extends Controller
         }
         return view('admin.pages.sales.transaksi', $data);
     }
+
 
     public function edit($id)
     {
@@ -62,12 +55,6 @@ class TransaksiController extends Controller
         return $pdf->setPaper('a5', 'landscape')->download("transaksi_$id.pdf");
     }
 
-    public function update_ket(Request $request)
-    {
-        $data = Transaksi::where('id_transaksi', $request->id_transaksi)
-            ->update(['keterangan' => 'Dibayar']);
-        return response()->json($data);
-    }
 
     public function update_stok(Request $request)
     {
@@ -78,28 +65,10 @@ class TransaksiController extends Controller
 
     public function save(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'id_barang' => 'required',
-            'id_pembeli' => 'required',
-            'jumlah' => 'required',
-            'tanggal' => 'required',
-            'keterangan' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 404);
-        };
-        Transaksi::updateOrCreate(
-            [
-                'id_transaksi' => $request->id_transaksi
-            ],
-            [
-                'id_barang' => $request->id_barang,
-                'id_pembeli' => $request->id_pembeli,
-                'jumlah' => $request->jumlah,
-                'tanggal' => $request->tanggal,
-                'keterangan' => $request->keterangan
-            ]
-        );
+
+        foreach ($request->multi as $key => $value) {
+            Transaksi::updateOrCreate($value);
+        }
         return response()->json(['status' => true]);
     }
 

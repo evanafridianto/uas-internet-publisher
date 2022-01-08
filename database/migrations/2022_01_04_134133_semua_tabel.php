@@ -49,7 +49,7 @@ class SemuaTabel extends Migration
             $table->unsignedInteger('id_pembeli')->nullable();
             $table->integer('jumlah');
             $table->date('tanggal');
-            $table->enum('keterangan', ['Dibayar', 'Belum Dibayar']);
+            $table->string('keterangan', 250);
             $table->timestamps();
 
             $table->foreign('id_barang')->references('id_barang')->on('barang');

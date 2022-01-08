@@ -13,24 +13,24 @@ class Transaksi extends Model
     protected $primaryKey = 'id_transaksi';
 
     protected $fillable =  [
-        'id_barang', 'id_pembeli', 'jumlah', 'tanggal', 'keterangan'
+        'kode_transaksi', 'id_barang', 'id_pembeli', 'jumlah', 'tanggal', 'keterangan'
     ];
 
     // relasi antara tb transaksi ke tb pembayaran
     public function pembayaran()
     {
-        return $this->hasMany('App\Models\Pembayaran');
+        return $this->hasMany(Pembayaran::class);
     }
 
     // relasi antara tb transaksi ke tb barang
     public function barang()
     {
-        return $this->belongsTo('App\Models\Barang');
+        return $this->belongsTo(Barang::class, 'id_barang', 'id_barang');
     }
 
     // relasi antara tb transaksi ke tb pembeli
     public function pembeli()
     {
-        return $this->belongsTo('App\Models\Pembeli');
+        return $this->belongsTo(Pembeli::class, 'id_pembeli', 'id_pembeli');
     }
 }

@@ -19,6 +19,6 @@ class Supplier extends Model
     // relasi antara tb supplier ke tb barang
     public function barang()
     {
-        return $this->hasMany('App\Models\Barang');
+        return $this->hasMany(Barang::class);
     }
 }

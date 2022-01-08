@@ -16,8 +16,8 @@ $(function() {
                 name: "DT_RowIndex",
             },
             {
-                data: "id_transaksi",
-                name: "id_transaksi",
+                data: "transaksi.id_transaksi",
+                name: "transaksi.id_transaksi",
             },
             {
                 data: "tanggal",
@@ -66,36 +66,6 @@ function reload_table() {
     table.ajax.reload(null, false);
 }
 
-// add pembayaran from transaksi
-function add_pembayaran(id) {
-    const t = new Date();
-    const date = ("0" + t.getDate()).slice(-2);
-    const month = ("0" + (t.getMonth() + 1)).slice(-2);
-    const year = t.getFullYear();
-    let today = year + "-" + month + "-" + date;
-    $('[name="tgl_bayar"]').val(today);
-
-    $('[name="id_pembayaran"]').val("");
-    $(".text-danger").empty(); // clear error string
-    $("#pembayaran_modal").modal("show"); // show bootstrap modal
-    $(".modal-title").text("Detail Pembayaran"); // Set Title to Bootstrap modal title
-    $.ajax({
-        url: "pembayaran/detail_bayar/" + id,
-        type: "GET",
-        dataType: "JSON",
-        success: function(data) {
-            let total = data.jumlah * data.harga;
-            $('[name="id_transaksi"]').val(data.id_transaksi);
-            $('[name="id_barang"]').val(data.id_barang);
-            $('[name="id_pembeli"]').val(data.id_pembeli);
-            $('[name="harga"]').val(data.harga);
-            $('[name="jumlah"]').val(data.jumlah);
-
-            $('[name="total_bayar"]').val(total);
-        },
-    });
-}
-
 // save
 function save_pembayaran() {
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
@@ -127,17 +97,6 @@ function save_pembayaran() {
                     if (dismiss === "timer") {}
                 }
             );
-            //if success reload ajax table
-            $.ajax({
-                url: "transaksi/update_ket",
-                type: "POST",
-                dataType: "JSON",
-                data: {
-                    _token: CSRF_TOKEN,
-                    id_transaksi: $('[name="id_transaksi"]').val(),
-                },
-                success: function(response) {},
-            });
 
             $.ajax({
                 url: "transaksi/update_stok",

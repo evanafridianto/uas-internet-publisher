@@ -18,7 +18,7 @@ class BarangController extends Controller
             'supplier' => Supplier::all(),
         ];
         if ($request->ajax()) {
-            $data = Barang::leftJoin('supplier', 'barang.id_supplier', '=', 'supplier.id_supplier')
+            $data = Barang::with('supplier')
                 ->orderBy('id_barang', 'asc')
                 ->get();
             return DataTables::of($data)

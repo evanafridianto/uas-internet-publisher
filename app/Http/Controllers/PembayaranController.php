@@ -16,7 +16,7 @@ class PembayaranController extends Controller
             'title'  => 'Data Pembayaran',
         ];
         if ($request->ajax()) {
-            $data = Pembayaran::leftJoin('transaksi', 'transaksi.id_transaksi', '=', 'pembayaran.id_transaksi')
+            $data = Pembayaran::with('transaksi')
                 ->orderBy('id_pembayaran', 'asc')
                 ->get();
             return DataTables::of($data)
@@ -32,13 +32,6 @@ class PembayaranController extends Controller
         return view('admin.pages.sales.pembayaran', $data);
     }
 
-    public function detail_bayar($id)
-    {
-        $data = Transaksi::leftJoin('barang', 'barang.id_barang', '=', 'transaksi.id_barang')
-            ->leftJoin('pembeli', 'pembeli.id_pembeli', '=', 'transaksi.id_pembeli')
-            ->find($id);
-        return response()->json($data);
-    }
 
     public function save(Request $request)
     {
@@ -51,15 +44,6 @@ class PembayaranController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 404);
         };
-
-        $ket = Transaksi::select("*")
-            ->where('id_transaksi', $request->id_transaksi)
-            ->get();
-        foreach ($ket as $key) {
-            if ($key->keterangan == 'Dibayar') {
-                return response()->json(['msg' => 'Transaksi ini telah dibayar'], 405);
-            }
-        }
 
         Pembayaran::updateOrCreate(
             [

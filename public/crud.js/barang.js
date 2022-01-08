@@ -28,8 +28,8 @@ $(function() {
                 name: "stok",
             },
             {
-                data: "nama_supplier",
-                name: "nama_supplier",
+                data: "supplier.nama_supplier",
+                name: "supplier.nama_supplier",
             },
             {
                 data: "action",

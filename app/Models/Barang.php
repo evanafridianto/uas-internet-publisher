@@ -20,12 +20,12 @@ class Barang extends Model
     // relasi antara tb barang ke tb supplier
     public function supplier()
     {
-        return $this->belongsTo('App\Models\Supplier');
+        return $this->belongsTo(Supplier::class, 'id_supplier', 'id_supplier');
     }
 
     // relasi antara tb barang ke tb transaksi
     public function transaksi()
     {
-        return $this->hasMany('App\Models\Transaksi');
+        return $this->hasMany(Transaksi::class);
     }
 }
