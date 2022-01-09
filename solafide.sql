@@ -29,9 +29,9 @@ CREATE TABLE IF NOT EXISTS `barang` (
 -- Dumping data for table toko_solafide.barang: ~3 rows (approximately)
 /*!40000 ALTER TABLE `barang` DISABLE KEYS */;
 INSERT INTO `barang` (`id_barang`, `nama_barang`, `harga`, `stok`, `id_supplier`, `created_at`, `updated_at`) VALUES
-	(1, 'Sabun Lifebuoy', 3000, 60, 2, '2022-01-06 19:42:30', '2022-01-06 19:42:30'),
-	(2, 'Beras Lahap 10Kg', 100000, 45, 1, '2022-01-06 19:42:49', '2022-01-06 19:42:49'),
-	(3, 'Susu Beruang', 12000, 199, 3, '2022-01-06 19:43:10', '2022-01-06 19:43:10');
+	(1, 'Beras Lahap 10Kg', 100000, 45, 1, '2022-01-09 07:56:03', '2022-01-09 07:56:03'),
+	(2, 'Sabun Lifebuoy', 3000, 45, 2, '2022-01-09 07:56:10', '2022-01-09 15:44:06'),
+	(3, 'Susu Beruang', 12000, 45, 3, '2022-01-09 07:56:22', '2022-01-09 15:44:10');
 /*!40000 ALTER TABLE `barang` ENABLE KEYS */;
 
 -- Dumping structure for table toko_solafide.failed_jobs
@@ -87,18 +87,16 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
   `id_pembayaran` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `tgl_bayar` date NOT NULL,
   `total_bayar` int(11) NOT NULL,
-  `id_transaksi` int(10) unsigned DEFAULT NULL,
+  `kode_transaksi` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_pembayaran`),
-  KEY `pembayaran_id_transaksi_foreign` (`id_transaksi`),
-  CONSTRAINT `pembayaran_id_transaksi_foreign` FOREIGN KEY (`id_transaksi`) REFERENCES `transaksi` (`id_transaksi`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `kode_transaksi_bayar` (`kode_transaksi`),
+  CONSTRAINT `kode_transaksi_bayar` FOREIGN KEY (`kode_transaksi`) REFERENCES `transaksi` (`kode_transaksi`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table toko_solafide.pembayaran: ~1 rows (approximately)
+-- Dumping data for table toko_solafide.pembayaran: ~0 rows (approximately)
 /*!40000 ALTER TABLE `pembayaran` DISABLE KEYS */;
-INSERT INTO `pembayaran` (`id_pembayaran`, `tgl_bayar`, `total_bayar`, `id_transaksi`, `created_at`, `updated_at`) VALUES
-	(1, '2022-01-07', 48000, 3, '2022-01-06 19:44:26', '2022-01-06 19:44:26');
 /*!40000 ALTER TABLE `pembayaran` ENABLE KEYS */;
 
 -- Dumping structure for table toko_solafide.pembeli
@@ -113,12 +111,12 @@ CREATE TABLE IF NOT EXISTS `pembeli` (
   PRIMARY KEY (`id_pembeli`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table toko_solafide.pembeli: ~3 rows (approximately)
+-- Dumping data for table toko_solafide.pembeli: ~1 rows (approximately)
 /*!40000 ALTER TABLE `pembeli` DISABLE KEYS */;
 INSERT INTO `pembeli` (`id_pembeli`, `nama_pembeli`, `jk`, `no_telp`, `alamat`, `created_at`, `updated_at`) VALUES
-	(1, 'Santi Susanti', 'P', '083008', 'Pisang Agung', '2022-01-06 19:41:15', '2022-01-06 19:41:15'),
-	(2, 'Jeky', 'L', '083008', 'Mega Mendung', '2022-01-06 19:41:42', '2022-01-06 19:41:42'),
-	(3, 'Upin Botak', 'L', '083001', 'Durian Runtuh', '2022-01-06 19:42:12', '2022-01-06 19:42:12');
+	(1, 'Jeky', 'L', '083008', 'Jember', '2022-01-09 07:55:54', '2022-01-09 07:55:54'),
+	(2, 'Siti', 'P', '8678767', 'Lowokwaru', '2022-01-09 15:43:37', '2022-01-09 15:43:37'),
+	(3, 'Andi', 'L', '3423', 'Mega Mendung', '2022-01-09 15:43:49', '2022-01-09 15:43:49');
 /*!40000 ALTER TABLE `pembeli` ENABLE KEYS */;
 
 -- Dumping structure for table toko_solafide.personal_access_tokens
@@ -152,37 +150,35 @@ CREATE TABLE IF NOT EXISTS `supplier` (
   PRIMARY KEY (`id_supplier`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table toko_solafide.supplier: ~3 rows (approximately)
+-- Dumping data for table toko_solafide.supplier: ~1 rows (approximately)
 /*!40000 ALTER TABLE `supplier` DISABLE KEYS */;
 INSERT INTO `supplier` (`id_supplier`, `nama_supplier`, `no_telp`, `alamat`, `created_at`, `updated_at`) VALUES
-	(1, 'Evan', '083000', 'Sukun', '2022-01-06 19:39:57', '2022-01-06 19:39:57'),
-	(2, 'Rudi Widodo', '083001', 'Jember', '2022-01-06 19:40:18', '2022-01-06 19:40:18'),
-	(3, 'Andi Mustafa', '083005', 'Galunggung', '2022-01-06 19:40:37', '2022-01-06 19:40:37');
+	(1, 'Evan', '083008', 'Mega Mendung', '2022-01-09 07:55:45', '2022-01-09 15:42:53'),
+	(2, 'Simon', '3423', 'Klojen', '2022-01-09 15:43:01', '2022-01-09 15:43:01'),
+	(3, 'Yeris', '5546', 'Sukun', '2022-01-09 15:43:10', '2022-01-09 15:43:10');
 /*!40000 ALTER TABLE `supplier` ENABLE KEYS */;
 
 -- Dumping structure for table toko_solafide.transaksi
 CREATE TABLE IF NOT EXISTS `transaksi` (
   `id_transaksi` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `kode_transaksi` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_barang` int(10) unsigned DEFAULT NULL,
   `id_pembeli` int(10) unsigned DEFAULT NULL,
   `jumlah` int(11) NOT NULL,
   `tanggal` date NOT NULL,
-  `keterangan` enum('Dibayar','Belum Dibayar') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keterangan` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_transaksi`),
   KEY `transaksi_id_barang_foreign` (`id_barang`),
   KEY `transaksi_id_pembeli_foreign` (`id_pembeli`),
+  KEY `transaksi_kode_transaksi_index` (`kode_transaksi`),
   CONSTRAINT `transaksi_id_barang_foreign` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`),
   CONSTRAINT `transaksi_id_pembeli_foreign` FOREIGN KEY (`id_pembeli`) REFERENCES `pembeli` (`id_pembeli`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table toko_solafide.transaksi: ~3 rows (approximately)
+-- Dumping data for table toko_solafide.transaksi: ~2 rows (approximately)
 /*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
-INSERT INTO `transaksi` (`id_transaksi`, `id_barang`, `id_pembeli`, `jumlah`, `tanggal`, `keterangan`, `created_at`, `updated_at`) VALUES
-	(1, 1, 1, 2, '2022-01-07', 'Belum Dibayar', '2022-01-06 19:43:28', '2022-01-06 19:43:28'),
-	(2, 2, 2, 1, '2022-01-07', 'Belum Dibayar', '2022-01-06 19:43:57', '2022-01-06 19:43:57'),
-	(3, 3, 3, 4, '2022-01-07', 'Dibayar', '2022-01-06 19:44:22', '2022-01-06 19:44:26');
 /*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 
 -- Dumping structure for table toko_solafide.users
@@ -204,7 +200,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table toko_solafide.users: ~1 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(1, 'Evan', 'admin@solafide.com', NULL, '$2y$10$tQXvJjs10tcIY.BlOmU02.yYssIaB0rjRE.SWzSil9iSIDEboxbVC', NULL, NULL, NULL, NULL, NULL);
+	(1, 'evan', 'admin@solafide.com', NULL, '$2y$10$Lo2/SaAItk.M0gYH/GtuB.gTc8NOWLnBUk3u6RKc9EuePjvYewlDC', NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

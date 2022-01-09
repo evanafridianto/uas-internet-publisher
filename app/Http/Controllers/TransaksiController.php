@@ -62,12 +62,14 @@ class TransaksiController extends Controller
     {
 
         foreach ($request->multi as $key => $value) {
-            Barang::where('id_barang', $value->id_barang)
-                ->update(['jumlah' => $value->jumlah]);
+            // Barang::where('id_barang', $value->id_barang)
+            //     ->update(['jumlah' => $value->jumlah]);
+            // $id_barang = Barang::select("stok")->find($request->id_barang);
+            // $update = Barang::find($request->id_barang)->update(['stok' => $id_barang->stok - $request->jumlah]);
+
+            Barang::find($value->id_barang)->update(array('stok' => -$value->jumlah));
+            return response()->json(['status' => true]);
         }
-        // $id_barang = Barang::select("stok")->find($request->id_barang);
-        // $update = Barang::find($request->id_barang)->update(['stok' => $id_barang->stok - $request->jumlah]);
-        return response()->json(['status' => true]);
     }
 
     public function save(Request $request)

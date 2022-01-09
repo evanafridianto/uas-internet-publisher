@@ -136,70 +136,42 @@ function detail_barang(id) {
                 $("#id_pembeli").find(":selected").val() +
                 '" class="form-control"></td><td>' +
                 data.stok +
-                '</td><td><div class="btn-group mb-2 btn-group-sm"><button class="btn btn-light btn-min" type="button">-</button><input name="multi[' +
+                '</td><td><input name="multi[' +
                 i +
-                '][jumlah]" class="form-control jumlah text-center" value="1" min="1"><button class="btn btn-light btn-plus" type="button">+</button></div></td><td class="harga">' +
+                '][jumlah]" class="form-control jumlah text-center" type="number" value="1" min="1"></td><td class="harga">' +
                 data.harga +
-                '</td><td class="total" name="total[' +
-                i +
-                ']></td><td><input class="form-control" name="multi[' +
+                '</td><td class="total">' +
+                data.harga * 1 +
+                '</td><td><input class="form-control" name="multi[' +
                 i +
                 '][keterangan]"></td><td><button type="button" class="btn btn-danger btn-xs remove-tr">Hapus</button></td></tr>'
             );
 
-            $(".btn-min").on("click", function(e) {
-                e.preventDefault();
-                var $parent = $(this).closest("tr");
-                var $input = $parent.find(".jumlah");
-                var $total = $parent.find(".total");
-                var value = parseInt($input.val());
-
-                if (value >= 1) {
-                    value = value - 1;
-                } else {
-                    value = 1;
-                }
-                if (value < 1) {
-                    $(this).parents("tr").remove();
-                }
-
-                $input.val(value);
-                $total.html(value * data.harga);
-                calcTotal();
-            });
-
             $(document).on("click", ".remove-tr", function() {
                 $(this).parents("tr").remove();
+                $('[name="daftar_barang"]').prop("selectedIndex", 0);
             });
 
-            var harga = 0;
-            $(".harga").each(function() {
-                harga = parseInt($(this).html());
-
+            $(".jumlah").bind("keyup change click", function(e) {
+                var sum = 0;
+                $(".jumlah").each(function() {
+                    if ($(this).val() !== "") {
+                        sum = parseInt($(this).val());
+                    }
+                });
                 var $parent = $(this).closest("tr");
-                var $input = $parent.find(".jumlah");
                 var $total = $parent.find(".total");
-                var value = parseInt($input.val());
+                var $harga = $parent.find(".harga");
+                // console.log($harga.html());
+                $total.html(sum * parseInt($harga.html()));
 
-                $total.html(value * harga);
-            });
+                // console.log(parseInt($harga.html()));
 
-            $(".btn-plus").on("click", function(e) {
-                e.preventDefault();
-                var $parent = $(this).closest("tr");
-                var $input = $parent.find(".jumlah");
-                var $total = $parent.find(".total");
-                var value = parseInt($input.val());
-
-                if (value < 100) {
-                    value = value + 1;
-                } else {
-                    value = 100;
-                }
-
-                $input.val(value);
-                $total.html(value * data.harga);
-                calcTotal();
+                let total = 0;
+                $(".total").each(function() {
+                    total += parseInt($(this).html());
+                });
+                $("#total_bayar").html("Rp. " + total);
             });
 
             const t = new Date();
@@ -236,14 +208,6 @@ function detail_barang(id) {
             );
         },
     });
-}
-
-function calcTotal() {
-    let total = 0;
-    $(".total").each(function() {
-        total += parseInt($(this).html());
-    });
-    $("#total_bayar").html("Rp. " + total);
 }
 
 //reload datatable ajax
@@ -298,7 +262,9 @@ function save_transaksi() {
                 title: "Sukses!",
                 // text: "Transaksi berhasil!",
                 // html: '<a target="_BLANK" href="transaksi/cetak/" type="button" class="btn btn-info  btn-sm" >Cetak</a>',
-                html: "Transaksi berhasil!" +
+                html: "Transaksi : " +
+                    kode_trns +
+                    " berhasil!" +
                     "<br>" +
                     '<button type="button" class="btn btn-primary close">x</button>' +
                     "  " +
