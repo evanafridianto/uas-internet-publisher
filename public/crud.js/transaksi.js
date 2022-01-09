@@ -138,9 +138,11 @@ function detail_barang(id) {
                 data.stok +
                 '</td><td><div class="btn-group mb-2 btn-group-sm"><button class="btn btn-light btn-min" type="button">-</button><input name="multi[' +
                 i +
-                '][jumlah]" class="form-control jumlah text-center" value="1" min="1"><button class="btn btn-light btn-plus" type="button">+</button></div></td><td>' +
+                '][jumlah]" class="form-control jumlah text-center" value="1" min="1"><button class="btn btn-light btn-plus" type="button">+</button></div></td><td class="harga">' +
                 data.harga +
-                '</td><td class="total"></td><td><input class="form-control" name="multi[' +
+                '</td><td class="total" name="total[' +
+                i +
+                ']></td><td><input class="form-control" name="multi[' +
                 i +
                 '][keterangan]"></td><td><button type="button" class="btn btn-danger btn-xs remove-tr">Hapus</button></td></tr>'
             );
@@ -170,8 +172,18 @@ function detail_barang(id) {
                 $(this).parents("tr").remove();
             });
 
-            $(".total").html($(".jumlah").val() * data.harga);
-            $("#total_bayar").html("Rp. " + parseInt($(".total").html()));
+            var harga = 0;
+            $(".harga").each(function() {
+                harga = parseInt($(this).html());
+
+                var $parent = $(this).closest("tr");
+                var $input = $parent.find(".jumlah");
+                var $total = $parent.find(".total");
+                var value = parseInt($input.val());
+
+                $total.html(value * harga);
+            });
+
             $(".btn-plus").on("click", function(e) {
                 e.preventDefault();
                 var $parent = $(this).closest("tr");
@@ -201,6 +213,12 @@ function detail_barang(id) {
             var time =
                 dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
             $(".kode_transaksi").val("TRANS-" + time);
+
+            let totalharga = 0;
+            $(".total").each(function() {
+                totalharga += parseInt($(this).html());
+            });
+            $("#total_bayar").html("Rp. " + totalharga);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             swal({
@@ -314,6 +332,7 @@ function save_transaksi() {
             $(".total").each(function() {
                 total += parseInt($(this).html());
             });
+
             let kode = $(".kode_transaksi").val();
             let CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
             $.ajax({
