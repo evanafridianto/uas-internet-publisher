@@ -50,6 +50,7 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
+                                            {{-- $2y$10$Lo2/SaAItk.M0gYH/GtuB.gTc8NOWLnBUk3u6RKc9EuePjvYewlDC --}}
                                             {{-- <h6>{{ password_hash('tokosolafide123', PASSWORD_DEFAULT) }}</h6> --}}
                                             <button type="submit" class="btn btn-primary btn-block">Login</button>
                                         </div>
@@ -65,7 +66,6 @@
             </div>
         </div>
     </div>
-
 
     <!--**********************************
             Scripts

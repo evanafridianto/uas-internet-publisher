@@ -45,11 +45,12 @@ class SemuaTabel extends Migration
 
         Schema::create('transaksi', function (Blueprint $table) {
             $table->increments('id_transaksi');
+            $table->string('kode_transaksi', 250)->index();
             $table->unsignedInteger('id_barang')->nullable();
             $table->unsignedInteger('id_pembeli')->nullable();
             $table->integer('jumlah');
             $table->date('tanggal');
-            $table->string('keterangan', 250);
+            $table->string('keterangan', 250)->nullable();
             $table->timestamps();
 
             $table->foreign('id_barang')->references('id_barang')->on('barang');
@@ -60,10 +61,10 @@ class SemuaTabel extends Migration
             $table->increments('id_pembayaran');
             $table->date('tgl_bayar');
             $table->integer('total_bayar');
-            $table->unsignedInteger('id_transaksi')->nullable();
+            $table->string('kode_transaksi', 250);
             $table->timestamps();
 
-            $table->foreign('id_transaksi')->references('id_transaksi')->on('transaksi');
+            $table->foreign('kode_transaksi')->references('kode_transaksi')->on('transaksi');
         });
     }
 

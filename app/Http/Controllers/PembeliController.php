@@ -15,7 +15,7 @@ class PembeliController extends Controller
             'title'  => 'Data Pembeli'
         ];
         if ($request->ajax()) {
-            $data = Pembeli::orderBy('id_pembeli', 'asc')
+            $data = Pembeli::orderBy('created_at', 'asc')
                 ->get();
             return DataTables::of($data)
                 ->addIndexColumn()

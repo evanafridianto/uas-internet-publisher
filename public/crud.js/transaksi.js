@@ -1,9 +1,44 @@
 var table;
+var table_penj;
+
 $(function() {
     $.ajaxSetup({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
+    });
+
+    table_penj = $("#datatable_penjualan").DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "/pembayaran",
+        columns: [{
+                data: "DT_RowIndex",
+                name: "DT_RowIndex",
+            },
+            {
+                data: "kode_transaksi",
+                name: "kode_transaksi",
+            },
+            {
+                data: "transaksi.tanggal",
+                name: "transaksi.tanggal",
+            },
+            {
+                data: "tgl_bayar",
+                name: "tgl_bayar",
+            },
+            {
+                data: "total_bayar",
+                name: "total_bayar",
+            },
+            {
+                data: "action",
+                name: "action",
+                orderable: false,
+                searchable: false,
+            },
+        ],
     });
 
     table = $("#datatable").DataTable({
@@ -13,6 +48,10 @@ $(function() {
         columns: [{
                 data: "DT_RowIndex",
                 name: "DT_RowIndex",
+            },
+            {
+                data: "kode_transaksi",
+                name: "kode_transaksi",
             },
             {
                 data: "pembeli.nama_pembeli",
@@ -87,7 +126,9 @@ function detail_barang(id) {
                 i +
                 '][id_barang]" value="' +
                 data.id_barang +
-                '" type="hidden"><input type="hidden" name="multi[' +
+                '" type="hidden"><input name="multi[' +
+                i +
+                '][kode_transaksi]" class="kode_transaksi" value="" type="hidden"><input type="hidden" name="multi[' +
                 i +
                 '][tanggal]" class="datepicker form-control"><input type="hidden" name="multi[' +
                 i +
@@ -104,9 +145,6 @@ function detail_barang(id) {
                 '][keterangan]"></td><td><button type="button" class="btn btn-danger btn-xs remove-tr">Hapus</button></td></tr>'
             );
 
-            $(document).on("click", ".remove-tr", function() {
-                $(this).parents("tr").remove();
-            });
             $(".btn-min").on("click", function(e) {
                 e.preventDefault();
                 var $parent = $(this).closest("tr");
@@ -126,6 +164,10 @@ function detail_barang(id) {
                 $input.val(value);
                 $total.html(value * data.harga);
                 calcTotal();
+            });
+
+            $(document).on("click", ".remove-tr", function() {
+                $(this).parents("tr").remove();
             });
 
             $(".total").html($(".jumlah").val() * data.harga);
@@ -154,6 +196,11 @@ function detail_barang(id) {
             const year = t.getFullYear();
             let today = year + "-" + month + "-" + date;
             $(".datepicker").val(today);
+
+            var dt = new Date();
+            var time =
+                dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+            $(".kode_transaksi").val("TRANS-" + time);
         },
         error: function(jqXHR, textStatus, errorThrown) {
             swal({
@@ -186,8 +233,11 @@ function reload_table_trns() {
     $("#datatable").DataTable().ajax.reload();
 }
 
+function reload_tablePen() {
+    $("#datatable_penjualan").DataTable().ajax.reload();
+}
 // add
-function add_transaksi() {
+function add_transaksi(e) {
     $(".text-danger").empty(); // clear error string
     $("#transaksi_modal").modal("show"); // show bootstrap modal
     $(".modal-title").text("Transaksi Baru"); // Set Title to Bootstrap modal title
@@ -209,7 +259,8 @@ function add_transaksi() {
 
 // save
 function save_transaksi() {
-    // console.log($("#transaksi_form").serialize());
+    let kode_trns = $(".kode_transaksi").val();
+
     $("#btnSave").html("Diproses...");
     $("#btnSave").attr("disabled", true); //set button disable
     // ajax adding data to database
@@ -218,7 +269,6 @@ function save_transaksi() {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
     });
-    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
     $.ajax({
         url: "transaksi/save",
         type: "POST",
@@ -228,10 +278,18 @@ function save_transaksi() {
             $("#transaksi_modal").modal("hide");
             swal({
                 title: "Sukses!",
-                text: "Data berhasil disimpan!",
+                // text: "Transaksi berhasil!",
+                // html: '<a target="_BLANK" href="transaksi/cetak/" type="button" class="btn btn-info  btn-sm" >Cetak</a>',
+                html: "Transaksi berhasil!" +
+                    "<br>" +
+                    '<button type="button" class="btn btn-primary close">x</button>' +
+                    "  " +
+                    '<a type="button" href="transaksi/cetak/' +
+                    kode_trns +
+                    '" target="_BLANK" class="btn btn-info cetak">Cetak</a>',
                 type: "success",
                 showConfirmButton: false,
-                timer: 1500,
+                // timer: 1500,
             }).then(
                 function() {},
                 // handling the promise rejection
@@ -239,14 +297,47 @@ function save_transaksi() {
                     if (dismiss === "timer") {}
                 }
             );
+            $(".close").click(function(e) {
+                e.preventDefault();
+                swal.clickConfirm();
+            });
+            // $.ajax({
+            //     url: "transaksi/update_stok",
+            //     type: "POST",
+            //     dataType: "JSON",
+            //     data: $("#transaksi_form").serializeArray(),
+            //     success: function(response) {},
+            // });
+
+            // save pembayaran
+            let total = 0;
+            $(".total").each(function() {
+                total += parseInt($(this).html());
+            });
+            let kode = $(".kode_transaksi").val();
+            let CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+            $.ajax({
+                url: "pembayaran/save",
+                type: "POST",
+                data: {
+                    _token: CSRF_TOKEN,
+                    total_bayar: total,
+                    kode_transaksi: kode,
+                },
+                dataType: "JSON",
+                success: function(bayar) {},
+                error: function(data_error) {
+                    console.log(data_error.responseJSON.message);
+                },
+            });
             //if success reload ajax table
             reload_table_trns();
+            reload_tablePen();
             // $("#btnSave").text("Simpan"); //change button text
             $("#btnSave").html("Bayar sekarang");
             $("#btnSave").attr("disabled", false); //set button enable
         },
         error: function(response) {
-            console.log(response);
             if (response.status == 404) {
                 let responseData = JSON.parse(response.responseText);
                 $.each(responseData, function(key, value) {
@@ -269,7 +360,7 @@ function save_transaksi() {
                     }
                 );
             }
-            $("#btnSave").html("Bayar sekrang");
+            $("#btnSave").html("Bayar sekarang");
             $("#btnSave").attr("disabled", false); //set button enable
         },
     });
@@ -319,6 +410,78 @@ function delete_transaksi(id) {
                     );
                     //if success reload ajax table
                     reload_table_trns();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    swal({
+                        title: "Gagal!",
+                        text: "Proses gagal!",
+                        type: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(
+                        function() {},
+                        // handling the promise rejection
+                        function(dismiss) {
+                            if (dismiss === "timer") {}
+                        }
+                    );
+                },
+            });
+        },
+        function(dismiss) {
+            // dismiss can be 'cancel', 'overlay',
+            // 'close', and 'timer'
+            if (dismiss === "cancel") {
+                if (dismiss === "timer") {}
+            }
+        }
+    );
+}
+
+// delete pembayaran
+function delete_pembayaran(id) {
+    swal({
+        title: "Anda yakin?",
+        text: "Data akan dihapus permanen!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#4fa7f3",
+        cancelButtonColor: "#d57171",
+        showCancelButton: true,
+        confirmButtonText: "Hapus",
+        cancelButtonText: "Batal",
+        confirmButtonClass: "btn btn-danger",
+        cancelButtonClass: "btn btn-default m-l-10",
+        buttonsStyling: false,
+    }).then(
+        function() {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+            });
+            $.ajax({
+                url: "pembayaran/delete/" + id,
+                type: "DELETE",
+                dataType: "JSON",
+                success: function(data) {
+                    swal({
+                        title: "Sukses!",
+                        text: "Data berhasil dihapus!",
+                        type: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(
+                        function() {},
+                        // handling the promise rejection
+                        function(dismiss) {
+                            if (dismiss === "timer") {}
+                        }
+                    );
+                    //if success reload ajax table
+                    reload_tablePen();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     swal({

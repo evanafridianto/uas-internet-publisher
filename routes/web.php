@@ -54,8 +54,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('transaksi/cetak/{id}', [TransaksiController::class, 'cetak_pdf']);
 
     //pembayaran route
-    Route::get('/pembayaran', [PembayaranController::class, 'index']);
-    Route::get('/pembayaran/detail_bayar/{id}', [PembayaranController::class, 'detail_bayar']);
+    // Route::get('/pembayaran', [PembayaranController::class, 'index']);
+    Route::get('/pembayaran', [PembayaranController::class, 'datatable']);
+    // Route::get('/pembayaran/detail_bayar/{id}', [PembayaranController::class, 'detail_bayar']);
     Route::post('pembayaran/save', [PembayaranController::class, 'save']);
     Route::delete('pembayaran/delete/{id}', [PembayaranController::class, 'delete']);
 });

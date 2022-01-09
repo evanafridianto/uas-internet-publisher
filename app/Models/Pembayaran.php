@@ -13,12 +13,13 @@ class Pembayaran extends Model
     protected $primaryKey = 'id_pembayaran';
 
     protected $fillable =  [
-        'tgl_bayar', 'total_bayar', 'id_transaksi'
+        'kode_transaksi', 'tgl_bayar', 'total_bayar', 'id_transaksi'
     ];
 
     // relasi antara tb pembayaran ke tb transaksi
     public function transaksi()
     {
-        return $this->belongsTo('App\Models\Transaksi');
+        return $this->belongsTo(Transaksi::class, 'kode_transaksi', 'kode_transaksi');
+        // return $this->belongsTo(Barang::class, 'id_barang', 'id_barang');
     }
 }
