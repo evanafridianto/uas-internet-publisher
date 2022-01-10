@@ -26,12 +26,12 @@ CREATE TABLE IF NOT EXISTS `barang` (
   CONSTRAINT `barang_id_supplier_foreign` FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id_supplier`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table toko_solafide.barang: ~3 rows (approximately)
+-- Dumping data for table toko_solafide.barang: ~1 rows (approximately)
 /*!40000 ALTER TABLE `barang` DISABLE KEYS */;
 INSERT INTO `barang` (`id_barang`, `nama_barang`, `harga`, `stok`, `id_supplier`, `created_at`, `updated_at`) VALUES
-	(1, 'Beras Lahap 10Kg', 100000, 45, 1, '2022-01-09 07:56:03', '2022-01-09 07:56:03'),
-	(2, 'Sabun Lifebuoy', 3000, 45, 2, '2022-01-09 07:56:10', '2022-01-09 15:44:06'),
-	(3, 'Susu Beruang', 12000, 45, 3, '2022-01-09 07:56:22', '2022-01-09 15:44:10');
+	(1, 'Beras Lahap 10Kg', 100000, 45, 1, '2022-01-10 02:20:46', '2022-01-10 02:20:46'),
+	(2, 'Sabun Lifebuoy', 3000, 45, 2, '2022-01-10 02:21:02', '2022-01-10 02:21:02'),
+	(3, 'Susu Beruang', 12000, 5, 3, '2022-01-10 02:21:17', '2022-01-10 02:21:17');
 /*!40000 ALTER TABLE `barang` ENABLE KEYS */;
 
 -- Dumping structure for table toko_solafide.failed_jobs
@@ -57,9 +57,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table toko_solafide.migrations: ~6 rows (approximately)
+-- Dumping data for table toko_solafide.migrations: ~7 rows (approximately)
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2014_10_12_000000_create_users_table', 1),
@@ -67,7 +67,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(3, '2014_10_12_200000_add_two_factor_columns_to_users_table', 1),
 	(4, '2019_08_19_000000_create_failed_jobs_table', 1),
 	(5, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-	(6, '2022_01_04_134133_semua_tabel', 1);
+	(6, '2022_01_04_134133_semua_tabel', 1),
+	(7, '2022_01_10_020526_create_trigger', 1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table toko_solafide.password_resets
@@ -91,9 +92,9 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_pembayaran`),
-  KEY `kode_transaksi_bayar` (`kode_transaksi`),
-  CONSTRAINT `kode_transaksi_bayar` FOREIGN KEY (`kode_transaksi`) REFERENCES `transaksi` (`kode_transaksi`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `pembayaran_kode_transaksi_foreign` (`kode_transaksi`),
+  CONSTRAINT `pembayaran_kode_transaksi_foreign` FOREIGN KEY (`kode_transaksi`) REFERENCES `transaksi` (`kode_transaksi`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table toko_solafide.pembayaran: ~0 rows (approximately)
 /*!40000 ALTER TABLE `pembayaran` DISABLE KEYS */;
@@ -114,9 +115,9 @@ CREATE TABLE IF NOT EXISTS `pembeli` (
 -- Dumping data for table toko_solafide.pembeli: ~1 rows (approximately)
 /*!40000 ALTER TABLE `pembeli` DISABLE KEYS */;
 INSERT INTO `pembeli` (`id_pembeli`, `nama_pembeli`, `jk`, `no_telp`, `alamat`, `created_at`, `updated_at`) VALUES
-	(1, 'Jeky', 'L', '083008', 'Jember', '2022-01-09 07:55:54', '2022-01-09 07:55:54'),
-	(2, 'Siti', 'P', '8678767', 'Lowokwaru', '2022-01-09 15:43:37', '2022-01-09 15:43:37'),
-	(3, 'Andi', 'L', '3423', 'Mega Mendung', '2022-01-09 15:43:49', '2022-01-09 15:43:49');
+	(1, 'Santi Susanti', 'P', '083001', 'Galunggung', '2022-01-10 02:20:36', '2022-01-10 02:20:36'),
+	(2, 'Upin Botak', 'L', '083001', 'Durian Runtuh', '2022-01-10 02:23:19', '2022-01-10 02:23:43'),
+	(3, 'Jeky Febriansyah', 'L', '083008', 'Mega Mendung', '2022-01-10 02:23:37', '2022-01-10 02:23:37');
 /*!40000 ALTER TABLE `pembeli` ENABLE KEYS */;
 
 -- Dumping structure for table toko_solafide.personal_access_tokens
@@ -153,9 +154,9 @@ CREATE TABLE IF NOT EXISTS `supplier` (
 -- Dumping data for table toko_solafide.supplier: ~1 rows (approximately)
 /*!40000 ALTER TABLE `supplier` DISABLE KEYS */;
 INSERT INTO `supplier` (`id_supplier`, `nama_supplier`, `no_telp`, `alamat`, `created_at`, `updated_at`) VALUES
-	(1, 'Evan', '083008', 'Mega Mendung', '2022-01-09 07:55:45', '2022-01-09 15:42:53'),
-	(2, 'Simon', '3423', 'Klojen', '2022-01-09 15:43:01', '2022-01-09 15:43:01'),
-	(3, 'Yeris', '5546', 'Sukun', '2022-01-09 15:43:10', '2022-01-09 15:43:10');
+	(1, 'Rudi Widodo', '083008', 'Jember', '2022-01-10 02:19:50', '2022-01-10 02:19:50'),
+	(2, 'Andi Mustafa', '083005', 'Sukun', '2022-01-10 02:19:58', '2022-01-10 02:19:58'),
+	(3, 'Martha Siagian', '083000', 'Medan', '2022-01-10 02:20:24', '2022-01-10 02:20:24');
 /*!40000 ALTER TABLE `supplier` ENABLE KEYS */;
 
 -- Dumping structure for table toko_solafide.transaksi
@@ -175,9 +176,9 @@ CREATE TABLE IF NOT EXISTS `transaksi` (
   KEY `transaksi_kode_transaksi_index` (`kode_transaksi`),
   CONSTRAINT `transaksi_id_barang_foreign` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`),
   CONSTRAINT `transaksi_id_pembeli_foreign` FOREIGN KEY (`id_pembeli`) REFERENCES `pembeli` (`id_pembeli`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table toko_solafide.transaksi: ~2 rows (approximately)
+-- Dumping data for table toko_solafide.transaksi: ~1 rows (approximately)
 /*!40000 ALTER TABLE `transaksi` DISABLE KEYS */;
 /*!40000 ALTER TABLE `transaksi` ENABLE KEYS */;
 
@@ -202,6 +203,16 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `remember_token`, `created_at`, `updated_at`) VALUES
 	(1, 'evan', 'admin@solafide.com', NULL, '$2y$10$Lo2/SaAItk.M0gYH/GtuB.gTc8NOWLnBUk3u6RKc9EuePjvYewlDC', NULL, NULL, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+
+-- Dumping structure for trigger toko_solafide.stok_update
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER stok_update AFTER INSERT ON `transaksi` FOR EACH ROW
+            BEGIN
+                UPDATE barang SET stok = stok - NEW.jumlah WHERE id_barang = new.id_barang;
+            END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;

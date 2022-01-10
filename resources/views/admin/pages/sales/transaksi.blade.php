@@ -1,41 +1,6 @@
 @extends('admin.layouts.main')
 @section('content')
 
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Data Penjualan</h4>
-                </div>
-                <div class="card-body">
-                    <button type="button" class="btn btn-primary" onclick="add_transaksi()">+ Transaksi Baru</button>
-                    <button type="button" class="btn btn-info" onclick="reload_tablePen()">Reload Tabel</button>
-
-                    <hr>
-                    <div class="table-responsive">
-                        <table id="datatable_penjualan" class="display" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Kode Transaksi</th>
-                                    <th>Tanggal Transaksi</th>
-                                    <th>Tanggal Bayar</th>
-                                    <th>Total Bayar</th>
-                                    <th class="text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -43,6 +8,7 @@
                     <h4 class="card-title">Data Transaksi</h4>
                 </div>
                 <div class="card-body">
+                    <button type="button" class="btn btn-primary" onclick="add_transaksi()">+ Transaksi Baru</button>
                     <button type="button" class="btn btn-info" onclick="reload_table_trns()">Reload Tabel</button>
                     <hr>
                     <div class="table-responsive">
@@ -71,7 +37,37 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Data Penjualan</h4>
+                </div>
+                <div class="card-body">
+                    <button type="button" class="btn btn-info" onclick="reload_tablePen()">Reload Tabel</button>
+                    <hr>
+                    <div class="table-responsive">
+                        <table id="datatable_penjualan" class="display" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kode Transaksi</th>
+                                    <th>Tanggal Transaksi</th>
+                                    <th>Tanggal Bayar</th>
+                                    <th>Total Bayar</th>
+                                    <th class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade bd-example-modal-lg" id="transaksi_modal">
