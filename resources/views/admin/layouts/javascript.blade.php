@@ -12,5 +12,7 @@
 <script src="{{ asset('admin/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
 
 <!-- bootstrap-datepicker -->
-<script src="{{ asset('admin/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}">
+<script src="{{ asset('admin/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+{{-- Jquery mask --}}
+<script src="{{ asset('admin/vendor/jquery-mask/jquery.mask.js') }}">
 </script>

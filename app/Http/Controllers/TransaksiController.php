@@ -57,24 +57,11 @@ class TransaksiController extends Controller
         return $pdf->setPaper('a5', 'landscape')->stream("SOLAFIDE_$kode.pdf");
     }
 
-
-    public function update_stok(Request $request)
-    {
-
-        foreach ($request->multi as $key => $value) {
-            // Barang::where('id_barang', $value->id_barang)
-            //     ->update(['jumlah' => $value->jumlah]);
-            // $id_barang = Barang::select("stok")->find($request->id_barang);
-            // $update = Barang::find($request->id_barang)->update(['stok' => $id_barang->stok - $request->jumlah]);
-
-            Barang::find($value->id_barang)->update(array('stok' => -$value->jumlah));
-            return response()->json(['status' => true]);
-        }
-    }
-
     public function save(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'pembeli' => 'required',
+            'barang' => 'required',
             'multi.*.id_pembeli' => 'required',
             'multi.*.id_barang' => 'required',
 

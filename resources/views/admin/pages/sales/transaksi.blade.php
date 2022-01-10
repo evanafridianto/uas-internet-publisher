@@ -84,7 +84,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Nama Pembeli</label>
-                                    <select class="form-control" id="id_pembeli">
+                                    <select class="form-control" name="pembeli" id="id_pembeli">
                                         <option value="">--Pilih Pembeli--</option>
                                         @foreach ($pembeli as $list)
                                             <option value="{{ $list->id_pembeli }}">{{ $list->nama_pembeli }}</option>
@@ -100,8 +100,7 @@
                                 <div class="form-group">
                                     <label>Barang</label>
                                     <select class="form-control add-data"
-                                        onchange="detail_barang(this.options[this.selectedIndex].value)"
-                                        name="daftar_barang">
+                                        onchange="detail_barang(this.options[this.selectedIndex].value)" name="barang">
                                         <option value="">--Tambah Barang--</option>
                                         @foreach ($barang as $list)
                                             <option value="{{ $list->id_barang }}">{{ $list->nama_barang }}</option>
@@ -115,17 +114,15 @@
                             <div class="col-md-12">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-responsive-sm" id="tabel-beli">
-                                        <thead>
-                                            <tr>
-                                                <th>Nama Barang</th>
-                                                <th>Stok</th>
-                                                <th class="text-center">Jumlah Beli</th>
-                                                <th>Harga</th>
-                                                <th>Total</th>
-                                                <th>Ket</th>
-                                                <th class="text-center">Aksi</th>
-                                            </tr>
-                                        </thead>
+                                        <tr>
+                                            <th>Nama Barang</th>
+                                            <th>Stok</th>
+                                            <th class="text-center">Jumlah Beli</th>
+                                            <th>Harga</th>
+                                            <th>Total</th>
+                                            <th>Ket</th>
+                                            <th class="text-center">Aksi</th>
+                                        </tr>
 
                                     </table>
                                 </div>
@@ -142,7 +139,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <div class="alert alert-info solid ">TOTAL BAYAR :<h2 id="total_bayar">0</h2>
+                                    <div class="alert alert-info solid ">TOTAL BAYAR :
+                                        Rp. <h2 id="total_bayar">0</h2>
                                     </div>
                                 </div>
                             </div>

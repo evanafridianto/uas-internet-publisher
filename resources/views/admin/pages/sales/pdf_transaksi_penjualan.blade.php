@@ -132,15 +132,18 @@
                     <td>{{ $item->nama_barang }}</td>
 
                     <td>{{ $item->jumlah }}</td>
-                    <td>{{ $item->harga }}</td>
+                    <td>Rp. {{ $item->harga }}</td>
                     <td>Rp. {{ $item->harga * $item->jumlah }}</td>
                     <td>{{ $item->keterangan }}</td>
                 </tr>
             @endforeach
+            <tr class="item-last">
+                <td style="font-weight: bold;">Grand Total</td>
+                <td> : </td>
+                <td> : </td>
+                <td style="font-weight: bold;">Rp. {{ $item->total_bayar }}</td>
+            </tr>
         </table>
-        @foreach ($data as $item)
-        @endforeach
-        <h2 style="text-align: right">Grand Total Rp.{{ $item->total_bayar }}</h2>
     </div>
 </body>
 

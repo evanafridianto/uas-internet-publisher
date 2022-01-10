@@ -105,6 +105,10 @@ $(function() {
         format: "yyyy-mm-dd",
         language: "id",
     });
+
+    $("#transaksi_modal").on("hide.bs.modal", function() {
+        $("#tabel-beli tr:not(:first)").empty();
+    });
 });
 
 // detail barang
@@ -120,7 +124,7 @@ function detail_barang(id) {
             i++;
 
             $("#tabel-beli").append(
-                "<tr><td>" +
+                '<tr class="order"><td>' +
                 data.nama_barang +
                 '<input name="multi[' +
                 i +
@@ -146,32 +150,30 @@ function detail_barang(id) {
                 i +
                 '][keterangan]"></td><td><button type="button" class="btn btn-danger btn-xs remove-tr">Hapus</button></td></tr>'
             );
+            // var totalbayar = $("#total_bayar");
+            $("tr.order")
+                .find("input.jumlah")
+                .bind("keyup click", function(e) {
+                    e.preventDefault();
+                    var $row = $(this).closest("tr.order");
+                    jumlah = +$row.find(".jumlah").val();
+                    harga = +$row.find(".harga").html();
 
-            $(document).on("click", ".remove-tr", function() {
+                    var totalbayar = 0;
+                    totalku = parseInt(jumlah) * harga;
+
+                    $row.find(".total").text(totalku);
+                    calc_total();
+                })
+                .filter(".jumlah")
+                .change();
+
+            let totalharga = 0;
+            $(".remove-tr").click(function(e) {
+                e.preventDefault();
                 $(this).parents("tr").remove();
-                $('[name="daftar_barang"]').prop("selectedIndex", 0);
-            });
-
-            $(".jumlah").bind("keyup change click", function(e) {
-                var sum = 0;
-                $(".jumlah").each(function() {
-                    if ($(this).val() !== "") {
-                        sum = parseInt($(this).val());
-                    }
-                });
-                var $parent = $(this).closest("tr");
-                var $total = $parent.find(".total");
-                var $harga = $parent.find(".harga");
-                // console.log($harga.html());
-                $total.html(sum * parseInt($harga.html()));
-
-                // console.log(parseInt($harga.html()));
-
-                let total = 0;
-                $(".total").each(function() {
-                    total += parseInt($(this).html());
-                });
-                $("#total_bayar").html("Rp. " + total);
+                $('[name="barang"]').prop("selectedIndex", 0);
+                calc_total();
             });
 
             const t = new Date();
@@ -186,11 +188,7 @@ function detail_barang(id) {
                 dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
             $(".kode_transaksi").val("TRANS-" + time);
 
-            let totalharga = 0;
-            $(".total").each(function() {
-                totalharga += parseInt($(this).html());
-            });
-            $("#total_bayar").html("Rp. " + totalharga);
+            calc_total();
         },
         error: function(jqXHR, textStatus, errorThrown) {
             swal({
@@ -210,6 +208,13 @@ function detail_barang(id) {
     });
 }
 
+function calc_total() {
+    var sum = 0;
+    $(".total").each(function() {
+        sum += parseFloat($(this).text());
+    });
+    $("#total_bayar").text(sum);
+}
 //reload datatable ajax
 function reload_table_trns() {
     $("#datatable").DataTable().ajax.reload();
@@ -220,6 +225,7 @@ function reload_tablePen() {
 }
 // add
 function add_transaksi(e) {
+    $("#total_bayar").html(0);
     $(".text-danger").empty(); // clear error string
     $("#transaksi_modal").modal("show"); // show bootstrap modal
     $(".modal-title").text("Transaksi Baru"); // Set Title to Bootstrap modal title
@@ -242,7 +248,7 @@ function add_transaksi(e) {
 // save
 function save_transaksi() {
     let kode_trns = $(".kode_transaksi").val();
-
+    let total_bayar = parseInt($("#total_bayar").text());
     $("#btnSave").html("Diproses...");
     $("#btnSave").attr("disabled", true); //set button disable
     // ajax adding data to database
@@ -285,29 +291,16 @@ function save_transaksi() {
                 e.preventDefault();
                 swal.clickConfirm();
             });
-            // $.ajax({
-            //     url: "transaksi/update_stok",
-            //     type: "POST",
-            //     dataType: "JSON",
-            //     data: $("#transaksi_form").serializeArray(),
-            //     success: function(response) {},
-            // });
-
             // save pembayaran
-            let total = 0;
-            $(".total").each(function() {
-                total += parseInt($(this).html());
-            });
 
-            let kode = $(".kode_transaksi").val();
             let CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
             $.ajax({
                 url: "pembayaran/save",
                 type: "POST",
                 data: {
                     _token: CSRF_TOKEN,
-                    total_bayar: total,
-                    kode_transaksi: kode,
+                    total_bayar: total_bayar,
+                    kode_transaksi: kode_trns,
                 },
                 dataType: "JSON",
                 success: function(bayar) {},
