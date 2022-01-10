@@ -5,14 +5,12 @@
                 <li class="nav-label first">Main Menu</li>
                 <li><a href="/beranda" aria-expanded="false"><i class="icon icon-home"></i><span
                             class="nav-text">Dashboard</span></a></li>
-                <li class="nav-label">Sales</li>
-                <li><a href="/transaksi" aria-expanded="false"><i class="icon icon-tag"></i><span
-                            class="nav-text">Transaksi Penjualan</span></a></li>
-
-                </li>
+                <li><a href="/transaksi" aria-expanded="false">
+                        <i class="fa fa-shopping-cart"></i><span class="nav-text">Transaksi Penjualan</span>
+                    </a></li>
                 <li class="nav-label">Database</li>
-                <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                            class=" icon-notebook"></i><span class="nav-text">Data Master</span></a>
+                <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"> <i
+                            class="fa fa-database"></i><span class="nav-text">Data Master</span></a>
                     <ul aria-expanded="false">
                         <li><a href="/barang">Data Barang</a></li>
                         <li><a href="/pembeli">Data Pembeli</a></li>

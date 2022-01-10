@@ -132,16 +132,16 @@
                     <td>{{ $item->nama_barang }}</td>
 
                     <td>{{ $item->jumlah }}</td>
-                    <td>Rp. {{ $item->harga }}</td>
-                    <td>Rp. {{ $item->harga * $item->jumlah }}</td>
+                    <td>Rp. {{ number_format($item->harga) }}</td>
+                    <td>Rp. {{ number_format($item->harga * $item->jumlah) }}</td>
                     <td>{{ $item->keterangan }}</td>
                 </tr>
             @endforeach
             <tr class="item-last">
                 <td style="font-weight: bold;">Grand Total</td>
                 <td> : </td>
-                <td> : </td>
-                <td style="font-weight: bold;">Rp. {{ $item->total_bayar }}</td>
+                <td> </td>
+                <td style="font-weight: bold;">Rp. {{ number_format($item->total_bayar) }}</td>
             </tr>
         </table>
     </div>
